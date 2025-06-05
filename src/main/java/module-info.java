@@ -4,5 +4,7 @@ module org.gjbmloslos.bankqueuesim {
 
 
     opens org.gjbmloslos.bankqueuesim to javafx.fxml;
+    opens org.gjbmloslos.bankqueuesim.model to javafx.base;
+
     exports org.gjbmloslos.bankqueuesim;
 }

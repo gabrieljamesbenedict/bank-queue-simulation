@@ -120,31 +120,29 @@
             </HBox>
          </children>
       </VBox>
-      <VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <VBox spacing="5.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank Services" />
-                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" text="Add" />
-                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" text="Edit" />
-                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" text="Remove" />
-                  <Button fx:id="bankServiceClear" mnemonicParsing="false" text="Clear" />
-                  <TextField promptText="Service Name..." />
-                  <TextField promptText="Service Duration..." />
+                  <TextField fx:id="serviceNameInput" promptText="Service Name..." />
+                  <TextField fx:id="serviceDurationInput" promptText="Service Duration..." />
+                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Add" />
+                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" prefWidth="150.0" text="Edit" />
+                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" prefWidth="150.0" text="Remove" />
+                  <Button fx:id="bankServiceClear" mnemonicParsing="false" prefWidth="150.0" text="Clear" />
                </children>
-               <padding>
+               <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <TableView fx:id="bankServiceList" prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn prefWidth="50.0" text="ID" />
-                <TableColumn prefWidth="400.0" text="Service Name" />
-                  <TableColumn minWidth="0.0" prefWidth="169.5999877929687" text="Service Duration" />
-              </columns>
+               </HBox.margin>
+            </VBox>
+            <TableView fx:id="bankServiceList" prefHeight="187.0" prefWidth="440.0">
+               <columns>
+                  <TableColumn fx:id="bankServiceNameList" prefWidth="150.0" text="Service Name" />
+                  <TableColumn fx:id="bankServiceDurationList" prefWidth="150.0" text="Service Duration" />
+               </columns>
             </TableView>
          </children>
-      </VBox>
+      </HBox>
       <HBox alignment="CENTER_LEFT" spacing="10.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
