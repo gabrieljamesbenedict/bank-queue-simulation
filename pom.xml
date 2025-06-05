@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.gjbmloslos.bankqueuesim/org.gjbmloslos.bankqueuesim.HelloApplication
+                            <mainClass>org.gjbmloslos.bankqueuesim/org.gjbmloslos.bankqueuesim.SimulationSettings
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

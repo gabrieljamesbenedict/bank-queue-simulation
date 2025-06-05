@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
+   <padding>
+      <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+   </padding>
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Settings">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teller Amount" />
+                  <Spinner fx:id="tellerAmount" editable="true" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queue Amount" />
+                  <Spinner fx:id="queueAmount" editable="true" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity" />
+                  <CheckBox fx:id="strictExclusivity" mnemonicParsing="false" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If disabled, tellers with a free queue can accept customers from other queues.)">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Arrival Interval Mode" />
+                  <ComboBox fx:id="custumerArrivalIntervalMode" onAction="#toggleIntervalMode" prefWidth="150.0" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="staticIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Static Interval" />
+                  <Spinner fx:id="customerStaticInterval" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="randomIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Random Interval" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Min:" />
+                  <Spinner fx:id="customerRandomIntervalMin" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max:" />
+                  <Spinner fx:id="customerRandomIntervalMax" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Time" />
+                  <Spinner fx:id="simulationTime" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank Services" />
+                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" text="Add" />
+                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" text="Edit" />
+                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" text="Remove" />
+                  <Button fx:id="bankServiceClear" mnemonicParsing="false" text="Clear" />
+                  <TextField promptText="Service Name..." />
+                  <TextField promptText="Service Duration..." />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <TableView fx:id="bankServiceList" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn prefWidth="50.0" text="ID" />
+                <TableColumn prefWidth="400.0" text="Service Name" />
+                  <TableColumn minWidth="0.0" prefWidth="169.5999877929687" text="Service Duration" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <Button fx:id="simulationStart" mnemonicParsing="false" text="Start" />
+            <Button fx:id="simulationClear" mnemonicParsing="false" text="Clear" />
+            <Button fx:id="simulationCancel" mnemonicParsing="false" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
