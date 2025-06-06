@@ -16,7 +16,7 @@ public class SimulationSettings extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(SimulationSettings.class.getResource("simulation-settings-view.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Bank Queue Simulation");
+        stage.setTitle("Set Configuration");
         stage.setScene(scene);
         stage.show();
 

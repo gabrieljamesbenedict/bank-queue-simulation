@@ -1,17 +1,28 @@
 package org.gjbmloslos.bankqueuesim;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.gjbmloslos.bankqueuesim.model.BankService;
+import org.gjbmloslos.bankqueuesim.model.RandomInterval;
+import org.gjbmloslos.bankqueuesim.model.SimulationConfiguration;
+import org.gjbmloslos.bankqueuesim.model.StaticInterval;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SimulationSettingsController {
 
     @FXML Spinner<Integer> tellerAmount;
     @FXML Spinner<Integer> queueAmount;
     @FXML CheckBox strictExclusivity;
+    @FXML HBox exclusivityContainer;
 
     @FXML ComboBox custumerArrivalIntervalMode;
     @FXML Spinner<Integer> customerStaticInterval;
@@ -36,6 +47,8 @@ public class SimulationSettingsController {
     @FXML Button simulationClear;
     @FXML Button simulationCancel;
 
+    SimulationConfiguration configuration;
+
     @FXML
     public void initialize() {
 
@@ -49,6 +62,42 @@ public class SimulationSettingsController {
         bankServiceDurationList.setCellValueFactory(new PropertyValueFactory<BankService, Integer>("serviceDuration"));
         populateWithDefaultBankServices();
 
+        Spinner spinners[] = {
+                tellerAmount,
+                queueAmount,
+                customerStaticInterval,
+                customerRandomIntervalMin,
+                customerRandomIntervalMax,
+                simulationTime
+        };
+        for (Spinner spinner : spinners) {
+            spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory (1, Integer.MAX_VALUE));
+        }
+
+        toggleStrictExclusivity();
+        tellerAmount.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                toggleStrictExclusivity();
+            }
+        });
+        queueAmount.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                toggleStrictExclusivity();
+            }
+        });
+
+    }
+
+    private void toggleStrictExclusivity () {
+        if (tellerAmount.getValue() == queueAmount.getValue()) {
+            exclusivityContainer.setVisible(true);
+            exclusivityContainer.setManaged(true);
+        } else {
+            exclusivityContainer.setVisible(false);
+            exclusivityContainer.setManaged(false);
+        }
     }
 
     @FXML public void toggleIntervalMode () {
@@ -74,5 +123,73 @@ public class SimulationSettingsController {
         bankServiceList.getItems().add(new BankService("Create Account", 300));
 
     }
+
+    @FXML public void addBankService () {
+        String name = serviceNameInput.getText();
+        int duration = Integer.parseInt(serviceDurationInput.getText());
+        BankService bankService = new BankService(name, duration);
+        bankServiceList.getItems().add(bankService);
+    }
+
+    @FXML public void editBankService () {
+        int index = bankServiceList.getSelectionModel().getSelectedIndex();
+        String name = serviceNameInput.getText();
+        String duration = serviceDurationInput.getText();
+        BankService bankService = bankServiceList.getSelectionModel().getSelectedItem();
+        if (!name.isBlank()) {
+            bankService.setServiceName(name);
+            bankServiceList.getItems().set(index, bankService);
+        }
+        if (!duration.isBlank()) {
+            bankService.setServiceDuration(Integer.parseInt(duration));
+            bankServiceList.getItems().set(index, bankService);
+        }
+
+    }
+
+    @FXML public void deleteBankService () {
+        int index = bankServiceList.getSelectionModel().getSelectedIndex();
+        bankServiceList.getItems().remove(index);
+    }
+
+    @FXML public void clearBankService () {
+        bankServiceList.getItems().removeAll(bankServiceList.getItems());
+    }
+
+    private Boolean validateInputFields () { // return true if inputs are valid, otherwise return false.
+        return true;
+    }
+
+    @FXML public void startSim () {
+
+        if (!validateInputFields()) {
+            return;
+        }
+
+        configuration = new SimulationConfiguration(
+                tellerAmount.getValue(),
+                queueAmount.getValue(),
+                simulationTime.getValue(),
+                strictExclusivity.isSelected(),
+                (custumerArrivalIntervalMode.getValue().toString().equals("Static"))?
+                        new StaticInterval(customerStaticInterval.getValue())
+                        :
+                        new RandomInterval(customerRandomIntervalMin.getValue(), customerRandomIntervalMax.getValue()),
+                new ArrayList<BankService>(bankServiceList.getItems().stream().toList())
+        );
+
+        Simulation sim = new Simulation(configuration);
+        sim.start();
+
+    }
+
+    @FXML void clearConfig () {
+
+    }
+
+    @FXML public void exitConfig () {
+
+    }
+
 
 }

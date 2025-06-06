@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
    <padding>
       <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
@@ -54,11 +53,11 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <HBox fx:id="exclusivityContainer" alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity" />
                   <CheckBox fx:id="strictExclusivity" mnemonicParsing="false" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If disabled, tellers with a free queue can accept customers from other queues.)">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If enabled, tellers will never share queue lines. Only available when amount of tellers and queues match)">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -120,19 +119,19 @@
             </HBox>
          </children>
       </VBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
          <children>
             <VBox spacing="5.0">
                <children>
                   <TextField fx:id="serviceNameInput" promptText="Service Name..." />
                   <TextField fx:id="serviceDurationInput" promptText="Service Duration..." />
-                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Add" />
-                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" prefWidth="150.0" text="Edit" />
-                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" prefWidth="150.0" text="Remove" />
-                  <Button fx:id="bankServiceClear" mnemonicParsing="false" prefWidth="150.0" text="Clear" />
+                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" onAction="#addBankService" prefHeight="26.0" prefWidth="150.0" text="Add" />
+                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" onAction="#editBankService" prefWidth="150.0" text="Edit" />
+                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" onAction="#deleteBankService" prefWidth="150.0" text="Remove" />
+                  <Button fx:id="bankServiceClear" mnemonicParsing="false" onAction="#clearBankService" prefWidth="150.0" text="Clear" />
                </children>
                <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets />
                </HBox.margin>
             </VBox>
             <TableView fx:id="bankServiceList" prefHeight="187.0" prefWidth="440.0">
@@ -148,9 +147,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <Button fx:id="simulationStart" mnemonicParsing="false" text="Start" />
-            <Button fx:id="simulationClear" mnemonicParsing="false" text="Clear" />
-            <Button fx:id="simulationCancel" mnemonicParsing="false" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#startSim" text="Start" />
+            <Button mnemonicParsing="false" onAction="#clearConfig" text="Clear" />
+            <Button mnemonicParsing="false" onAction="#exitConfig" text="Cancel" />
          </children>
       </HBox>
    </children>
