@@ -1,4 +1,4 @@
-package org.gjbmloslos.bankqueuesim.model;
+package org.gjbmloslos.bankqueuesim.entity.interval;
 
 public class StaticInterval implements Interval {
 

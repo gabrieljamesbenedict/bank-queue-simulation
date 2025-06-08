@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<SplitPane dividerPositions="0.4" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
+<SplitPane dividerPositions="0.35" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
    <items>
       <VBox spacing="15.0" style="-fx-background-color: lightgray;">
          <children>
@@ -72,7 +71,7 @@
             <VBox spacing="2.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank Services" />
-                  <ListView fx:id="lvBankService" prefHeight="100.0" />
+                  <ListView fx:id="lvBankService" prefHeight="150.0" />
                </children>
             </VBox>
             <VBox spacing="2.0">

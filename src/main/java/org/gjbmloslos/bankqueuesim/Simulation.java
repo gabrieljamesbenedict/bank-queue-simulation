@@ -4,10 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.gjbmloslos.bankqueuesim.model.SimulationConfiguration;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Simulation {
 
@@ -19,7 +17,6 @@ public class Simulation {
     }
 
     public void start () {
-        System.out.println("Hello World1");
         FXMLLoader fxmlLoader;
         Parent root;
         try {

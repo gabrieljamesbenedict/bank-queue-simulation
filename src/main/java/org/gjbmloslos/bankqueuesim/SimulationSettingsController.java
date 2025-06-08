@@ -6,16 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import org.gjbmloslos.bankqueuesim.model.BankService;
-import org.gjbmloslos.bankqueuesim.model.RandomInterval;
-import org.gjbmloslos.bankqueuesim.model.SimulationConfiguration;
-import org.gjbmloslos.bankqueuesim.model.StaticInterval;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
+import org.gjbmloslos.bankqueuesim.entity.interval.RandomInterval;
+import org.gjbmloslos.bankqueuesim.entity.interval.StaticInterval;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SimulationSettingsController {
 
@@ -51,6 +46,7 @@ public class SimulationSettingsController {
 
     @FXML
     public void initialize() {
+        System.out.println(Runtime.getRuntime().availableProcessors());
 
         String[] custumerArrivalIntervalModeOptions = {"Static", "Random"};
         custumerArrivalIntervalMode.getItems().removeAll(custumerArrivalIntervalMode.getItems());
@@ -183,7 +179,7 @@ public class SimulationSettingsController {
 
     }
 
-    @FXML void clearConfig () {
+    @FXML public void clearConfig () {
 
     }
 

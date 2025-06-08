@@ -2,19 +2,20 @@ package org.gjbmloslos.bankqueuesim;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
-import org.gjbmloslos.bankqueuesim.model.BankService;
-import org.gjbmloslos.bankqueuesim.model.Interval;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
+import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
+import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
 
 import java.util.ArrayList;
 
 public class SimulationController {
+
+    int time;
 
     int tellerAmount, queueAmount, simulationTime;
     Boolean strictExclusivity;
@@ -35,11 +36,12 @@ public class SimulationController {
     @FXML HBox queueRow;
 
     ArrayList<VBox> customerLaneList;
+    ArrayList<Customer> customerBufferList;
 
 
     @FXML public void initialize () {
 
-        System.out.println("Hello World2");
+        time = 0;
 
         tellerAmount = Simulation.configuration.getTellerAmount();
         queueAmount = Simulation.configuration.getQueueAmount();
@@ -49,7 +51,7 @@ public class SimulationController {
         bankServiceList = Simulation.configuration.getBankServiceList();
 
         textMaxSimTime.setText(Integer.toString(simulationTime));
-        textElapsedSimTime.setText(Integer.toString(0));
+        textElapsedSimTime.setText(Integer.toString(time));
         textTellerAmount.setText(Integer.toString(tellerAmount));
         textQueueAmount.setText(Integer.toString(queueAmount));
         textStrictExclusivity.setText(Boolean.toString(strictExclusivity));
@@ -61,8 +63,8 @@ public class SimulationController {
         for (int i = 0; i < tellerAmount; i++) {
             BorderPane teller = new BorderPane();
             teller.setPrefSize(50, 50);
-            teller.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-            Label tellerIndex = new Label(Integer.toString(i));
+            teller.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), Insets.EMPTY)));
+            Label tellerIndex = new Label("Teller"+Integer.toString(i));
             teller.setCenter(tellerIndex);
             tellerRow.getChildren().add(teller);
         }
@@ -72,6 +74,8 @@ public class SimulationController {
             queueRow.getChildren().add(customerLane);
             customerLaneList.add(customerLane);
         }
+
+        customerBufferList = new ArrayList<>();
 
     }
 

@@ -1,4 +1,7 @@
-package org.gjbmloslos.bankqueuesim.model;
+package org.gjbmloslos.bankqueuesim;
+
+import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
+import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
 
 import java.util.ArrayList;
 
