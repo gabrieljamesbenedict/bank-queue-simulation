@@ -10,6 +10,7 @@ public class RandomInterval implements Interval {
     public RandomInterval(int intervalMin, int intervalMax) {
         this.intervalMin = intervalMin;
         this.intervalMax = intervalMax;
+        rand = new Random();
     }
 
     @Override
@@ -24,7 +25,6 @@ public class RandomInterval implements Interval {
 
     @Override
     public int getNextCustomerArrivalTime() {
-        int nextCustomerArrivalTime = rand.nextInt(intervalMin, intervalMax);
-        return nextCustomerArrivalTime;
+        return rand.nextInt(intervalMin, intervalMax);
     }
 }

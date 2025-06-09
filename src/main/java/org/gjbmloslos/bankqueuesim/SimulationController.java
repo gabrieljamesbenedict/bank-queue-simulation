@@ -1,7 +1,10 @@
 package org.gjbmloslos.bankqueuesim;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
@@ -9,13 +12,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
+import org.gjbmloslos.bankqueuesim.entity.customer.CustomerSpawnManager;
 import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
+import org.gjbmloslos.bankqueuesim.entity.queue.CustomerQueue;
+import org.gjbmloslos.bankqueuesim.entity.queue.CustomerQueueManager;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationController {
 
-    int time;
+    public static int time;
 
     int tellerAmount, queueAmount, simulationTime;
     Boolean strictExclusivity;
@@ -35,7 +45,14 @@ public class SimulationController {
     @FXML HBox tellerRow;
     @FXML HBox queueRow;
 
-    ArrayList<VBox> customerLaneList;
+    ScheduledExecutorService timeRunnerService;
+    Runnable timeRunner;
+
+    CustomerSpawnManager customerSpawnManager;
+    CustomerQueueManager customerQueueManager;
+
+    ArrayList<CustomerQueue> customerQueueList;
+    ArrayList<VBox> customerQueueContainerList;
     ArrayList<Customer> customerBufferList;
 
 
@@ -59,7 +76,8 @@ public class SimulationController {
         textIntervalTime.setText(customerInterval.getTimeInterval());
         lvBankService.getItems().addAll(bankServiceList);
 
-        customerLaneList = new ArrayList<>();
+        customerQueueContainerList = new ArrayList<>();
+        customerQueueList = new ArrayList<>();
         for (int i = 0; i < tellerAmount; i++) {
             BorderPane teller = new BorderPane();
             teller.setPrefSize(50, 50);
@@ -72,15 +90,36 @@ public class SimulationController {
             VBox customerLane = new VBox();
             customerLane.setBackground(new Background(new BackgroundFill(Color.PINK, CornerRadii.EMPTY, Insets.EMPTY)));
             queueRow.getChildren().add(customerLane);
-            customerLaneList.add(customerLane);
+            customerQueueContainerList.add(customerLane);
+            CustomerQueue cq = new CustomerQueue(new ArrayDeque<>(), customerLane);
+            customerQueueList.add(cq);
         }
 
         customerBufferList = new ArrayList<>();
 
+        timeRunnerService = Executors.newSingleThreadScheduledExecutor();
+
+        customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerInterval);
+        customerQueueManager = new CustomerQueueManager(customerQueueList);
     }
 
     @FXML public void beginSimulation () {
         simulationStatus.setText("Simulation Running");
+
+        customerSpawnManager.startCustomerSpawnService();
+
+        timeRunner = () -> {
+            if (time >= simulationTime) {
+                System.out.println("Simulation maximum time has been reached");
+                Alert a = new Alert(Alert.AlertType.INFORMATION, "Simulation maximum time has been reached", ButtonType.OK);
+                a.show();
+                timeRunnerService.shutdown();
+            }
+            Platform.runLater(() -> textElapsedSimTime.setText(Integer.toString(time)));
+            time++;
+        };
+
+        timeRunnerService.scheduleWithFixedDelay(timeRunner, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
 }

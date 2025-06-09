@@ -76,7 +76,7 @@
             </VBox>
             <VBox spacing="2.0">
                <children>
-                  <Button mnemonicParsing="false" text="Begin Simulation" />
+                  <Button mnemonicParsing="false" onAction="#beginSimulation" text="Begin Simulation" />
                </children>
             </VBox>
          </children>

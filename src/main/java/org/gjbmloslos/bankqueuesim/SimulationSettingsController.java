@@ -177,6 +177,7 @@ public class SimulationSettingsController {
         Simulation sim = new Simulation(configuration);
         sim.start();
 
+
     }
 
     @FXML public void clearConfig () {
