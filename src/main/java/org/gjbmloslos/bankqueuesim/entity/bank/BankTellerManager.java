@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -72,6 +73,13 @@ public class BankTellerManager {
                 int reducedDuration = c.getDuration() - 1;
                 c.setDuration(reducedDuration);
                 System.out.println("Customer" + c.getId() + " has " + reducedDuration + "ms left.");
+                if (reducedDuration <= 0) {
+                    System.out.println("Customer"+c.getId() + " has completed Service:" + c.getService().getServiceName());
+                    c = null; // Completely destroy costumer
+                    Platform.runLater(bt::defaultCustomerLabel);
+                    bt.setBusy(false);
+                    availableBankTellerList.add(bt);
+                }
             }
         };
 

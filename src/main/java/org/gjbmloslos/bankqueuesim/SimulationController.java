@@ -98,20 +98,7 @@ public class SimulationController {
             tellerBox.setMinSize(125, 100);
             tellerBox.setMaxSize(125, 100);
             tellerBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(15), Insets.EMPTY)));
-            Label tellerLabel = new Label("Teller"+Integer.toString(i));
-            tellerLabel.setMinSize(125, 45);
-            tellerLabel.setMaxSize(125, 45);
-            tellerLabel.setAlignment(Pos.CENTER);
-            tellerLabel.setTextAlignment(TextAlignment.CENTER);
-            tellerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
-            Label currentCustomerLabel = new Label("None");
-            currentCustomerLabel.setMinSize(125, 45);
-            currentCustomerLabel.setMaxSize(125, 45);
-            currentCustomerLabel.setAlignment(Pos.CENTER);
-            currentCustomerLabel.setTextAlignment(TextAlignment.CENTER);
-            currentCustomerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
             BankTeller bt = new BankTeller(i, tellerBox);
-            bt.getTellerBox().getChildren().addAll(tellerLabel, currentCustomerLabel);
             bankTellerList.add(bt);
             tellerRow.getChildren().add(tellerBox);
         }
