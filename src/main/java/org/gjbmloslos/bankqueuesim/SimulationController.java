@@ -14,6 +14,7 @@ import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerSpawnManager;
 import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueueManager;
+import org.gjbmloslos.bankqueuesim.entity.teller.BankTeller;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class SimulationController {
 
     ArrayList<Customer> customerBufferList;
     ArrayList<CustomerQueue> customerQueueList;
+    ArrayList<BankTeller>
 
     private String timestamp () {
         return " @" + time + "s";
@@ -85,29 +87,30 @@ public class SimulationController {
         for (int i = 0; i < tellerAmount; i++) {
             VBox tellerBox = new VBox();
             tellerBox.setSpacing(10);
-            tellerBox.setMinSize(100, 100);
-            tellerBox.setMaxSize(100, 100);
+            tellerBox.setMinSize(125, 100);
+            tellerBox.setMaxSize(125, 100);
             tellerBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(15), Insets.EMPTY)));
             Label teller = new Label("Teller"+Integer.toString(i));
-            teller.setMinSize(100, 45);
-            teller.setMaxSize(100, 45);
+            teller.setMinSize(125, 45);
+            teller.setMaxSize(125, 45);
             teller.setAlignment(Pos.CENTER);
             teller.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
             Label currentCustomer = new Label("None");
-            currentCustomer.setMinSize(100, 45);
-            currentCustomer.setMaxSize(100, 45);
+            currentCustomer.setMinSize(125, 45);
+            currentCustomer.setMaxSize(125, 45);
             currentCustomer.setAlignment(Pos.CENTER);
             currentCustomer.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
             tellerBox.getChildren().addAll(new Label[]{teller, currentCustomer});
             tellerRow.getChildren().add(tellerBox);
+
         }
 
         customerQueueList = new ArrayList<>();
         for (int i = 0; i < queueAmount; i++) {
             VBox customerLane = new VBox();
             customerLane.setSpacing(5);
-            customerLane.setMinWidth(100);
-            customerLane.setMaxWidth(100);
+            customerLane.setMinWidth(125);
+            customerLane.setMaxWidth(125);
             customerLane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(15), Insets.EMPTY)));
             queueRow.getChildren().add(customerLane);
             CustomerQueue cq = new CustomerQueue(i, new ArrayDeque<>(), customerLane);
@@ -118,7 +121,7 @@ public class SimulationController {
 
         timeRunnerService = Executors.newSingleThreadScheduledExecutor();
 
-        customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerInterval);
+        customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerInterval, bankServiceList);
         customerQueueManager = new CustomerQueueManager(customerBufferList, customerQueueList);
     }
 

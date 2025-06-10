@@ -1,5 +1,8 @@
 package org.gjbmloslos.bankqueuesim.entity.bank;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class BankService {
 
     String serviceName;
@@ -24,5 +27,10 @@ public class BankService {
 
     public void setServiceDuration(int serviceDuration) {
         this.serviceDuration = serviceDuration;
+    }
+
+    public static BankService getRandomBankService (ArrayList<BankService> bankServiceList) {
+        Random r = new Random();
+        return bankServiceList.get(r.nextInt(bankServiceList.size()));
     }
 }

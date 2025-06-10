@@ -7,7 +7,9 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import org.gjbmloslos.bankqueuesim.SimulationController;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
 import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
 
 import java.util.ArrayList;
@@ -20,13 +22,15 @@ public class CustomerSpawnManager {
 
     private ArrayList<Customer> costumerBufferList;
     private Interval spawnInterval;
+    private ArrayList<BankService> bankServiceList;
 
     private ScheduledExecutorService customerSpawnService;
     Runnable bufferCustomer;
 
-    public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, Interval spawnInterval) {
+    public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, Interval spawnInterval, ArrayList<BankService> bankServiceList) {
         this.costumerBufferList = costumerBufferList;
         this.spawnInterval = spawnInterval;
+        this.bankServiceList = bankServiceList;
 
         customerSpawnService = Executors.newSingleThreadScheduledExecutor();
     }
@@ -46,18 +50,25 @@ public class CustomerSpawnManager {
         int delayInterval = (spawnInterval.getNextCustomerArrivalTime()*1000) / speed;
 
         bufferCustomer = () -> {
-            Customer c = new Customer(id, null, null);
-            Label l = new Label("Customer"+c.getId());
-            l.setAlignment(Pos.CENTER);
-            l.setMinSize(100, 45);
-            l.setMaxSize(100, 45);
-            l.setPadding(new Insets(5));
-            //l.setFont(new Font(10));
-            l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
-            c.setLabelRef(l);
-            costumerBufferList.add(c);
-            System.out.println("Spawned Customer" + c.getId() + " " + timestamp());
-            spawnCustomer(id + 1);
+            try {
+                Customer c = new Customer(id, null, null);
+                BankService bs = BankService.getRandomBankService(bankServiceList);
+                c.setService(bs);
+                Label l = new Label();
+                l.setAlignment(Pos.CENTER);
+                l.setTextAlignment(TextAlignment.CENTER);
+                l.setMinSize(125, 45);
+                l.setMaxSize(125, 45);
+                l.setPadding(new Insets(5));
+                l.setText(c.toString());
+                l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
+                c.setLabelRef(l);
+                costumerBufferList.add(c);
+                System.out.println("Spawned Customer" + c.getId() + " with Service: " + bs.getServiceName() + timestamp());
+                spawnCustomer(id + 1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         };
 
         Runnable spawnCustomerTask = () -> {

@@ -118,8 +118,8 @@ public class SimulationSettingsController {
 
         bankServiceList.getItems().add(new BankService("Deposit", 30));
         bankServiceList.getItems().add(new BankService("Withdrawal", 10));
-        bankServiceList.getItems().add(new BankService("Customer Care", 180));
-        bankServiceList.getItems().add(new BankService("Create Account", 300));
+        bankServiceList.getItems().add(new BankService("Transfer", 60));
+        bankServiceList.getItems().add(new BankService("Customer Care", 300));
 
     }
 
@@ -175,7 +175,7 @@ public class SimulationSettingsController {
                         new StaticInterval(customerStaticInterval.getValue())
                         :
                         new RandomInterval(customerRandomIntervalMin.getValue(), customerRandomIntervalMax.getValue()),
-                new ArrayList<BankService>(bankServiceList.getItems().stream().toList())
+                new ArrayList<>(bankServiceList.getItems())
         );
 
         Simulation sim = new Simulation(configuration);

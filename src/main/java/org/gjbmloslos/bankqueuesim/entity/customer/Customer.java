@@ -38,4 +38,9 @@ public class Customer {
     public void setLabelRef(Label labelRef) {
         this.labelRef = labelRef;
     }
+
+    @Override
+    public String toString() {
+        return "Customer"+id+"\n"+service.getServiceName() + "-" + service.getServiceDuration()+"s";
+    }
 }
