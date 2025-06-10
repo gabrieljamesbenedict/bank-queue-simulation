@@ -49,8 +49,8 @@ public class CustomerSpawnManager {
             Customer c = new Customer(id, null, null);
             Label l = new Label("Customer"+c.getId());
             l.setAlignment(Pos.CENTER);
-            l.setMinSize(100, 35);
-            l.setMaxSize(100, 35);
+            l.setMinSize(100, 45);
+            l.setMaxSize(100, 45);
             l.setPadding(new Insets(5));
             //l.setFont(new Font(10));
             l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));

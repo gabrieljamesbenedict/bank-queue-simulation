@@ -8,167 +8,162 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
-   <center>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
+   <padding>
+      <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+   </padding>
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Settings">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
          <padding>
-            <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
+      </HBox>
+      <VBox>
          <children>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Settings">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Text>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teller Amount" />
-                        <Spinner fx:id="tellerAmount" editable="true" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queue Amount" />
-                        <Spinner fx:id="queueAmount" editable="true" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox fx:id="exclusivityContainer" alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity" />
-                        <CheckBox fx:id="strictExclusivity" mnemonicParsing="false" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If enabled, tellers will never share queue lines. Only available when amount of tellers and queues match)">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                        </Text>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Arrival Interval Mode" />
-                        <ComboBox fx:id="custumerArrivalIntervalMode" onAction="#toggleIntervalMode" prefWidth="150.0" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox fx:id="staticIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Static Interval" />
-                        <Spinner fx:id="customerStaticInterval" editable="true" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox fx:id="randomIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Random Interval" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Min:" />
-                        <Spinner fx:id="customerRandomIntervalMin" editable="true" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max:" />
-                        <Spinner fx:id="customerRandomIntervalMax" editable="true" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Time" />
-                        <Spinner fx:id="simulationTime" editable="true" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Speed" />
-                        <Spinner fx:id="simulationSpeed" editable="true" />
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-            </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <VBox spacing="5.0">
-                     <children>
-                        <TextField fx:id="serviceNameInput" promptText="Service Name..." />
-                        <TextField fx:id="serviceDurationInput" promptText="Service Duration..." />
-                        <Button fx:id="bankServiceAdd" mnemonicParsing="false" onAction="#addBankService" prefHeight="26.0" prefWidth="150.0" text="Add" />
-                        <Button fx:id="bankServiceEdit" mnemonicParsing="false" onAction="#editBankService" prefWidth="150.0" text="Edit" />
-                        <Button fx:id="bankServiceRemove" mnemonicParsing="false" onAction="#deleteBankService" prefWidth="150.0" text="Remove" />
-                        <Button fx:id="bankServiceClear" mnemonicParsing="false" onAction="#clearBankService" prefWidth="150.0" text="Clear" />
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </VBox>
-                  <TableView fx:id="bankServiceList" prefHeight="187.0" prefWidth="440.0">
-                     <columns>
-                        <TableColumn fx:id="bankServiceNameList" prefWidth="150.0" text="Service Name" />
-                        <TableColumn fx:id="bankServiceDurationList" prefWidth="150.0" text="Service Duration" />
-                     </columns>
-                  </TableView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teller Amount" />
+                  <Spinner fx:id="tellerAmount" editable="true" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queue Amount" />
+                  <Spinner fx:id="queueAmount" editable="true" />
+               </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
+            </HBox>
+            <HBox fx:id="exclusivityContainer" alignment="CENTER_LEFT" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#startSim" text="Start" />
-                  <Button mnemonicParsing="false" onAction="#clearConfig" text="Clear" />
-                  <Button mnemonicParsing="false" onAction="#exitConfig" text="Cancel" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity" />
+                  <CheckBox fx:id="strictExclusivity" mnemonicParsing="false" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If enabled, tellers will never share queue lines. Only available when amount of tellers and queues match)">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Text>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>
-   </center>
-</BorderPane>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Arrival Interval Mode" />
+                  <ComboBox fx:id="custumerArrivalIntervalMode" onAction="#toggleIntervalMode" prefWidth="150.0" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="staticIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Static Interval" />
+                  <Spinner fx:id="customerStaticInterval" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox fx:id="randomIntervalContainer" alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Random Interval" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Min:" />
+                  <Spinner fx:id="customerRandomIntervalMin" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max:" />
+                  <Spinner fx:id="customerRandomIntervalMax" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Time" />
+                  <Spinner fx:id="simulationTime" editable="true" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(seconds)" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Speed" />
+                  <Spinner fx:id="simulationSpeed" editable="true" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+         <children>
+            <VBox spacing="5.0">
+               <children>
+                  <TextField fx:id="serviceNameInput" promptText="Service Name..." />
+                  <TextField fx:id="serviceDurationInput" promptText="Service Duration..." />
+                  <Button fx:id="bankServiceAdd" mnemonicParsing="false" onAction="#addBankService" prefHeight="26.0" prefWidth="150.0" text="Add" />
+                  <Button fx:id="bankServiceEdit" mnemonicParsing="false" onAction="#editBankService" prefWidth="150.0" text="Edit" />
+                  <Button fx:id="bankServiceRemove" mnemonicParsing="false" onAction="#deleteBankService" prefWidth="150.0" text="Remove" />
+                  <Button fx:id="bankServiceClear" mnemonicParsing="false" onAction="#clearBankService" prefWidth="150.0" text="Clear" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <TableView fx:id="bankServiceList" prefHeight="187.0" prefWidth="440.0">
+               <columns>
+                  <TableColumn fx:id="bankServiceNameList" prefWidth="150.0" text="Service Name" />
+                  <TableColumn fx:id="bankServiceDurationList" prefWidth="150.0" text="Service Duration" />
+               </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <Button mnemonicParsing="false" onAction="#startSim" text="Start" />
+            <Button mnemonicParsing="false" onAction="#clearConfig" text="Clear" />
+            <Button mnemonicParsing="false" onAction="#exitConfig" text="Cancel" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

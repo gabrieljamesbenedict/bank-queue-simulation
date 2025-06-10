@@ -55,6 +55,10 @@ public class SimulationController {
     ArrayList<Customer> customerBufferList;
     ArrayList<CustomerQueue> customerQueueList;
 
+    private String timestamp () {
+        return " @" + time + "s";
+    }
+
     @FXML public void initialize () {
 
         time = 0;
@@ -79,12 +83,23 @@ public class SimulationController {
 
 
         for (int i = 0; i < tellerAmount; i++) {
+            VBox tellerBox = new VBox();
+            tellerBox.setSpacing(10);
+            tellerBox.setMinSize(100, 100);
+            tellerBox.setMaxSize(100, 100);
+            tellerBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(15), Insets.EMPTY)));
             Label teller = new Label("Teller"+Integer.toString(i));
-            teller.setMinSize(100, 40);
-            teller.setMaxSize(100, 40);
+            teller.setMinSize(100, 45);
+            teller.setMaxSize(100, 45);
             teller.setAlignment(Pos.CENTER);
             teller.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
-                tellerRow.getChildren().add(teller);
+            Label currentCustomer = new Label("None");
+            currentCustomer.setMinSize(100, 45);
+            currentCustomer.setMaxSize(100, 45);
+            currentCustomer.setAlignment(Pos.CENTER);
+            currentCustomer.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
+            tellerBox.getChildren().addAll(new Label[]{teller, currentCustomer});
+            tellerRow.getChildren().add(tellerBox);
         }
 
         customerQueueList = new ArrayList<>();
@@ -134,11 +149,15 @@ public class SimulationController {
 
     }
 
-    @FXML public void end (boolean endedEarly) {
+    @FXML public void end () {
+        end(true);
+    }
+
+    public void end (boolean endedEarly) {
         if (endedEarly) {
-            System.out.println("Simulation has ended early" + timestamp);
+            System.out.println("Simulation has ended early" + timestamp());
         } else {
-            System.out.println("Simulation has ended" + timestamp);
+            System.out.println("Simulation has ended" + timestamp());
         }
         customerSpawnManager.endCustomerSpawnService();
         customerQueueManager.endCustomerQueueService();
