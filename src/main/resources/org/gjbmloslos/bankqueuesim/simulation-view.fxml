@@ -31,6 +31,12 @@
                   </HBox>
                   <HBox spacing="10.0">
                      <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Actual Elapsed Time:" />
+                        <Text fx:id="textActualElapsedTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="10.0">
+                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed" />
                         <Text fx:id="textSimulationSpeed" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                      </children>

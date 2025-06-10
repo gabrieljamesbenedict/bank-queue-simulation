@@ -8,13 +8,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankTellerManager;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerSpawnManager;
 import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueueManager;
-import org.gjbmloslos.bankqueuesim.entity.teller.BankTeller;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankTeller;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class SimulationController {
 
     public static int time;
+    public static int actualTime;
     public static int speed;
 
     int tellerAmount, queueAmount, simulationTime;
@@ -35,6 +38,7 @@ public class SimulationController {
     @FXML Text simulationStatus;
     @FXML Text textMaxSimTime;
     @FXML Text textElapsedSimTime;
+    @FXML Text textActualElapsedTime;
     @FXML Text textSimulationSpeed;
     @FXML Text textTellerAmount;
     @FXML Text textQueueAmount;
@@ -49,13 +53,15 @@ public class SimulationController {
 
     ScheduledExecutorService timeRunnerService;
     Runnable timeRunner;
+    Runnable actualTimeRunner;
 
     CustomerSpawnManager customerSpawnManager;
     CustomerQueueManager customerQueueManager;
+    BankTellerManager bankTellerManager;
 
     ArrayList<Customer> customerBufferList;
     ArrayList<CustomerQueue> customerQueueList;
-    ArrayList<BankTeller>
+    ArrayList<BankTeller> bankTellerList;
 
     private String timestamp () {
         return " @" + time + "s";
@@ -64,6 +70,7 @@ public class SimulationController {
     @FXML public void initialize () {
 
         time = 0;
+        actualTime = 0;
         speed = Simulation.configuration.getSimulationSpeed();
 
         tellerAmount = Simulation.configuration.getTellerAmount();
@@ -75,7 +82,8 @@ public class SimulationController {
 
         textMaxSimTime.setText(Integer.toString(simulationTime));
         textElapsedSimTime.setText(Integer.toString(time));
-        textSimulationSpeed.setText(Integer.toString(time));
+        textElapsedSimTime.setText(Integer.toString(time));
+        textSimulationSpeed.setText(Integer.toString(speed));
         textTellerAmount.setText(Integer.toString(tellerAmount));
         textQueueAmount.setText(Integer.toString(queueAmount));
         textStrictExclusivity.setText(Boolean.toString(strictExclusivity));
@@ -83,26 +91,29 @@ public class SimulationController {
         textIntervalTime.setText(customerInterval.getTimeInterval());
         lvBankService.getItems().addAll(bankServiceList);
 
-
+        bankTellerList = new ArrayList<>();
         for (int i = 0; i < tellerAmount; i++) {
             VBox tellerBox = new VBox();
             tellerBox.setSpacing(10);
             tellerBox.setMinSize(125, 100);
             tellerBox.setMaxSize(125, 100);
             tellerBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, new CornerRadii(15), Insets.EMPTY)));
-            Label teller = new Label("Teller"+Integer.toString(i));
-            teller.setMinSize(125, 45);
-            teller.setMaxSize(125, 45);
-            teller.setAlignment(Pos.CENTER);
-            teller.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
-            Label currentCustomer = new Label("None");
-            currentCustomer.setMinSize(125, 45);
-            currentCustomer.setMaxSize(125, 45);
-            currentCustomer.setAlignment(Pos.CENTER);
-            currentCustomer.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
-            tellerBox.getChildren().addAll(new Label[]{teller, currentCustomer});
+            Label tellerLabel = new Label("Teller"+Integer.toString(i));
+            tellerLabel.setMinSize(125, 45);
+            tellerLabel.setMaxSize(125, 45);
+            tellerLabel.setAlignment(Pos.CENTER);
+            tellerLabel.setTextAlignment(TextAlignment.CENTER);
+            tellerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
+            Label currentCustomerLabel = new Label("None");
+            currentCustomerLabel.setMinSize(125, 45);
+            currentCustomerLabel.setMaxSize(125, 45);
+            currentCustomerLabel.setAlignment(Pos.CENTER);
+            currentCustomerLabel.setTextAlignment(TextAlignment.CENTER);
+            currentCustomerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
+            BankTeller bt = new BankTeller(i, tellerBox);
+            bt.getTellerBox().getChildren().addAll(tellerLabel, currentCustomerLabel);
+            bankTellerList.add(bt);
             tellerRow.getChildren().add(tellerBox);
-
         }
 
         customerQueueList = new ArrayList<>();
@@ -123,6 +134,9 @@ public class SimulationController {
 
         customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerInterval, bankServiceList);
         customerQueueManager = new CustomerQueueManager(customerBufferList, customerQueueList);
+        bankTellerManager = new BankTellerManager(bankTellerList, customerQueueList);
+
+        simulationTime += 1; // sim time padding
     }
 
     @FXML public void begin () {
@@ -130,8 +144,10 @@ public class SimulationController {
 
         customerSpawnManager.startCustomerSpawnService();
         customerQueueManager.startCustomerQueueService();
+        bankTellerManager.startBankTellerManageService();
 
         timeRunner = () -> {
+            System.out.println("==================================================================================================");
             if (time >= simulationTime) {
                 System.out.println("Simulation maximum time has been reached");
                 Platform.runLater(() -> {
@@ -145,6 +161,12 @@ public class SimulationController {
             time++;
         };
 
+        actualTimeRunner = () -> {
+            Platform.runLater(() -> textActualElapsedTime.setText(Integer.toString(actualTime)));
+            actualTime++;
+        };
+
+        timeRunnerService.scheduleWithFixedDelay(actualTimeRunner, 0, 1, TimeUnit.SECONDS);
         timeRunnerService.scheduleWithFixedDelay(timeRunner, 0, (1000/speed), TimeUnit.MILLISECONDS);
     }
 
@@ -164,5 +186,6 @@ public class SimulationController {
         }
         customerSpawnManager.endCustomerSpawnService();
         customerQueueManager.endCustomerQueueService();
+        bankTellerManager.endBankTellerManageService();
     }
 }

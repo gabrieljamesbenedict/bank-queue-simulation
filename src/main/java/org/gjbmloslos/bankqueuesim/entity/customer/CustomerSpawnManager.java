@@ -7,7 +7,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
 import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
@@ -24,7 +23,7 @@ public class CustomerSpawnManager {
     private Interval spawnInterval;
     private ArrayList<BankService> bankServiceList;
 
-    private ScheduledExecutorService customerSpawnService;
+    private ScheduledExecutorService customerSpawnManagerService;
     Runnable bufferCustomer;
 
     public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, Interval spawnInterval, ArrayList<BankService> bankServiceList) {
@@ -32,7 +31,7 @@ public class CustomerSpawnManager {
         this.spawnInterval = spawnInterval;
         this.bankServiceList = bankServiceList;
 
-        customerSpawnService = Executors.newSingleThreadScheduledExecutor();
+        customerSpawnManagerService = Executors.newSingleThreadScheduledExecutor();
     }
 
     private String timestamp () {
@@ -45,13 +44,13 @@ public class CustomerSpawnManager {
     }
 
     private void spawnCustomer (int id) {
-        if (customerSpawnService.isShutdown()) return;
+        if (customerSpawnManagerService.isShutdown()) return;
 
         int delayInterval = (spawnInterval.getNextCustomerArrivalTime()*1000) / speed;
 
         bufferCustomer = () -> {
             try {
-                Customer c = new Customer(id, null, null);
+                Customer c = new Customer(id);
                 BankService bs = BankService.getRandomBankService(bankServiceList);
                 c.setService(bs);
                 Label l = new Label();
@@ -72,15 +71,15 @@ public class CustomerSpawnManager {
         };
 
         Runnable spawnCustomerTask = () -> {
-            customerSpawnService.submit(bufferCustomer);
+            customerSpawnManagerService.submit(bufferCustomer);
         };
 
         //System.out.println("Delay: " + delayInterval + "ms");
-        customerSpawnService.schedule(spawnCustomerTask, delayInterval, TimeUnit.MILLISECONDS);
+        customerSpawnManagerService.schedule(spawnCustomerTask, (id == 0)? 0 : delayInterval, TimeUnit.MILLISECONDS);
     }
 
     public void endCustomerSpawnService () {
-        customerSpawnService.shutdownNow();
+        customerSpawnManagerService.shutdownNow();
     }
 
 }

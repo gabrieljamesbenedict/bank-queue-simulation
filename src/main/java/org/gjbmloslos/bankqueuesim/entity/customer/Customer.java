@@ -6,13 +6,15 @@ import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
 public class Customer {
 
     int id;
+
     BankService service;
     Label labelRef;
+    CustomerQueue customerQueue;
 
-    public Customer(int id, BankService service, Label labelRef) {
+    int duration;
+
+    public Customer(int id) {
         this.id = id;
-        this.service = service;
-        this.labelRef = labelRef;
     }
 
     public int getId() {
@@ -29,6 +31,7 @@ public class Customer {
 
     public void setService(BankService service) {
         this.service = service;
+        duration = this.service.getServiceDuration();
     }
 
     public Label getLabelRef() {
@@ -37,6 +40,22 @@ public class Customer {
 
     public void setLabelRef(Label labelRef) {
         this.labelRef = labelRef;
+    }
+
+    public CustomerQueue getCustomerQueue() {
+        return customerQueue;
+    }
+
+    public void setCustomerQueue(CustomerQueue customerQueue) {
+        this.customerQueue = customerQueue;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     @Override

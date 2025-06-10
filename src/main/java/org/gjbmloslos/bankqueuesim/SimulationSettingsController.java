@@ -117,9 +117,9 @@ public class SimulationSettingsController {
     private void populateWithDefaultBankServices () {
 
         bankServiceList.getItems().add(new BankService("Deposit", 30));
-        bankServiceList.getItems().add(new BankService("Withdrawal", 10));
-        bankServiceList.getItems().add(new BankService("Transfer", 60));
-        bankServiceList.getItems().add(new BankService("Customer Care", 300));
+        //bankServiceList.getItems().add(new BankService("Withdrawal", 10));
+        //bankServiceList.getItems().add(new BankService("Transfer", 60));
+        //bankServiceList.getItems().add(new BankService("Customer Care", 300));
 
     }
 

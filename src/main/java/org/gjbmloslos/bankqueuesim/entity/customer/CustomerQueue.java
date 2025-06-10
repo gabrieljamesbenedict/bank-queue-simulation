@@ -8,12 +8,12 @@ public class CustomerQueue {
 
     int id;
     Queue<Customer> customerQueue;
-    VBox customerQueueContianer;
+    VBox customerQueueContainer;
 
-    public CustomerQueue(int id, Queue<Customer> customerQueue, VBox customerQueueContianer) {
+    public CustomerQueue(int id, Queue<Customer> customerQueue, VBox customerQueueContainer) {
         this.id = id;
         this.customerQueue = customerQueue;
-        this.customerQueueContianer = customerQueueContianer;
+        this.customerQueueContainer = customerQueueContainer;
     }
 
     public int getId() {
@@ -32,11 +32,11 @@ public class CustomerQueue {
         this.customerQueue = customerQueue;
     }
 
-    public VBox getCustomerQueueContianer() {
-        return customerQueueContianer;
+    public VBox getCustomerQueueContainer() {
+        return customerQueueContainer;
     }
 
-    public void setCustomerQueueContianer(VBox customerQueueContianer) {
-        this.customerQueueContianer = customerQueueContianer;
+    public void setCustomerQueueContainer(VBox customerQueueContainer) {
+        this.customerQueueContainer = customerQueueContainer;
     }
 }
