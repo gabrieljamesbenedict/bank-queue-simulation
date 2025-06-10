@@ -11,7 +11,7 @@ public class Customer {
     Label labelRef;
     CustomerQueue customerQueue;
 
-    int duration;
+    int remainingDuration;
 
     public Customer(int id) {
         this.id = id;
@@ -31,7 +31,7 @@ public class Customer {
 
     public void setService(BankService service) {
         this.service = service;
-        duration = this.service.getServiceDuration();
+        remainingDuration = this.service.getServiceDuration();
     }
 
     public Label getLabelRef() {
@@ -50,16 +50,16 @@ public class Customer {
         this.customerQueue = customerQueue;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getRemainingDuration() {
+        return remainingDuration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setRemainingDuration(int remainingDuration) {
+        this.remainingDuration = remainingDuration;
     }
 
     @Override
     public String toString() {
-        return "Customer"+id+"\n"+service.getServiceName() + "-" + service.getServiceDuration()+"s";
+        return "Customer"+id+"\n"+service.getServiceName() + "-" + remainingDuration +"s";
     }
 }

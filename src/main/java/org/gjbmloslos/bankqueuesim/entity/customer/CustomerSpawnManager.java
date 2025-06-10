@@ -49,25 +49,21 @@ public class CustomerSpawnManager {
         int delayInterval = (spawnInterval.getNextCustomerArrivalTime()*1000) / speed;
 
         bufferCustomer = () -> {
-            try {
-                Customer c = new Customer(id);
-                BankService bs = BankService.getRandomBankService(bankServiceList);
-                c.setService(bs);
-                Label l = new Label();
-                l.setAlignment(Pos.CENTER);
-                l.setTextAlignment(TextAlignment.CENTER);
-                l.setMinSize(125, 45);
-                l.setMaxSize(125, 45);
-                l.setPadding(new Insets(5));
-                l.setText(c.toString());
-                l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
-                c.setLabelRef(l);
-                costumerBufferList.add(c);
-                System.out.println("Spawned Customer" + c.getId() + " with Service: " + bs.getServiceName() + timestamp());
-                spawnCustomer(id + 1);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Customer c = new Customer(id);
+            BankService bs = BankService.getRandomBankService(bankServiceList);
+            c.setService(bs);
+            Label l = new Label();
+            l.setAlignment(Pos.CENTER);
+            l.setTextAlignment(TextAlignment.CENTER);
+            l.setMinSize(125, 45);
+            l.setMaxSize(125, 45);
+            l.setPadding(new Insets(5));
+            l.setText(c.toString());
+            l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
+            c.setLabelRef(l);
+            costumerBufferList.add(c);
+            System.out.println("Spawned Customer" + c.getId() + " with Service:" + bs.getServiceName() + " after " + delayInterval + "s " + timestamp());
+            spawnCustomer(id + 1);
         };
 
         Runnable spawnCustomerTask = () -> {

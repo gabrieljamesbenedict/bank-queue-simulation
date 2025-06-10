@@ -2,7 +2,6 @@ package org.gjbmloslos.bankqueuesim.entity.bank;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -11,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
+
+import java.util.concurrent.Semaphore;
 
 public class BankTeller {
 
@@ -25,7 +26,6 @@ public class BankTeller {
         this.id = id;
         this.tellerBox = tellerBox;
 
-        tellerBox.getChildren().addAll(new Label(), new Label());
         defaultTellerLabel();
         defaultCustomerLabel();
     }
@@ -37,7 +37,7 @@ public class BankTeller {
         tellerLabel.setAlignment(Pos.CENTER);
         tellerLabel.setTextAlignment(TextAlignment.CENTER);
         tellerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTSALMON, new CornerRadii(15), Insets.EMPTY)));
-        tellerBox.getChildren().set(0, tellerLabel);
+        tellerBox.getChildren().add(tellerLabel);
     }
 
     public void defaultCustomerLabel() {
@@ -47,7 +47,11 @@ public class BankTeller {
         currentCustomerLabel.setAlignment(Pos.CENTER);
         currentCustomerLabel.setTextAlignment(TextAlignment.CENTER);
         currentCustomerLabel.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(15), Insets.EMPTY)));
-        tellerBox.getChildren().set(1, currentCustomerLabel);
+        if (tellerBox.getChildren().size() == 1) {
+            tellerBox.getChildren().add(currentCustomerLabel);
+        } else {
+            tellerBox.getChildren().set(1, currentCustomerLabel);
+        }
     }
 
     public int getId() {

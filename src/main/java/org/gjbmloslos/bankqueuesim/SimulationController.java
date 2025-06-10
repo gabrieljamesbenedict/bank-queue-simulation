@@ -134,7 +134,6 @@ public class SimulationController {
         bankTellerManager.startBankTellerManageService();
 
         timeRunner = () -> {
-            System.out.println("==================================================================================================");
             if (time >= simulationTime) {
                 System.out.println("Simulation maximum time has been reached");
                 Platform.runLater(() -> {
