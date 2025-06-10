@@ -1,14 +1,17 @@
 package org.gjbmloslos.bankqueuesim;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import org.gjbmloslos.bankqueuesim.component.inclusion.ExclusiveMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusiveMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.StrictExclusiveMode;
+import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
+import org.gjbmloslos.bankqueuesim.component.interval.RandomIntervalMode;
+import org.gjbmloslos.bankqueuesim.component.interval.StaticIntervalMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
-import org.gjbmloslos.bankqueuesim.entity.interval.RandomInterval;
-import org.gjbmloslos.bankqueuesim.entity.interval.StaticInterval;
 
 import java.util.ArrayList;
 
@@ -16,10 +19,10 @@ public class SimulationSettingsController {
 
     @FXML Spinner<Integer> tellerAmount;
     @FXML Spinner<Integer> queueAmount;
-    @FXML CheckBox strictExclusivity;
-    @FXML HBox exclusivityContainer;
+    @FXML ComboBox<String> inclusionModePicker;
+    @FXML Label inclusionToolTip;
 
-    @FXML ComboBox custumerArrivalIntervalMode;
+    @FXML ComboBox<String> customerArrivalIntervalMode;
     @FXML Spinner<Integer> customerStaticInterval;
     @FXML Spinner<Integer> customerRandomIntervalMin;
     @FXML Spinner<Integer> customerRandomIntervalMax;
@@ -43,16 +46,24 @@ public class SimulationSettingsController {
     @FXML Button simulationClear;
     @FXML Button simulationCancel;
 
+    InclusionMode inclusionMode;
+    IntervalMode intervalMode;
     SimulationConfiguration configuration;
 
     @FXML
     public void initialize() {
         System.out.println(Runtime.getRuntime().availableProcessors());
 
-        String[] custumerArrivalIntervalModeOptions = {"Static", "Random"};
-        custumerArrivalIntervalMode.getItems().removeAll(custumerArrivalIntervalMode.getItems());
-        custumerArrivalIntervalMode.getItems().addAll(custumerArrivalIntervalModeOptions);
-        custumerArrivalIntervalMode.getSelectionModel().select("Static");
+        String[] inclusionModeOptions = {"Inclusive", "Exclusive", "Strict Exclusive"};
+        inclusionModePicker.getItems().clear();
+        inclusionModePicker.getItems().addAll(inclusionModeOptions);
+        inclusionModePicker.getSelectionModel().select("Inclusive");
+        changeInclusionMode();
+
+        String[] customerArrivalIntervalModeOptions = {"Static", "Random"};
+        customerArrivalIntervalMode.getItems().clear();
+        customerArrivalIntervalMode.getItems().addAll(customerArrivalIntervalModeOptions);
+        customerArrivalIntervalMode.getSelectionModel().select("Static");
         toggleIntervalMode();
 
         bankServiceNameList.setCellValueFactory(new PropertyValueFactory<BankService, String>("serviceName"));
@@ -73,34 +84,11 @@ public class SimulationSettingsController {
         simulationTime.getValueFactory().setValue(60);
         simulationSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory (1, 100));
 
-        toggleStrictExclusivity();
-        tellerAmount.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
-                toggleStrictExclusivity();
-            }
-        });
-        queueAmount.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
-                toggleStrictExclusivity();
-            }
-        });
-
     }
 
-    private void toggleStrictExclusivity () {
-        if (tellerAmount.getValue() == queueAmount.getValue()) {
-            exclusivityContainer.setVisible(true);
-            exclusivityContainer.setManaged(true);
-        } else {
-            exclusivityContainer.setVisible(false);
-            exclusivityContainer.setManaged(false);
-        }
-    }
 
     @FXML public void toggleIntervalMode () {
-        String selectedItem = custumerArrivalIntervalMode.getSelectionModel().getSelectedItem().toString();
+        String selectedItem = customerArrivalIntervalMode.getSelectionModel().getSelectedItem().toString();
         if (selectedItem == "Static") {
             staticIntervalContainer.setVisible(true);
             staticIntervalContainer.setManaged(true);
@@ -114,13 +102,31 @@ public class SimulationSettingsController {
         }
     }
 
+    @FXML public void changeInclusionMode () {
+        String s = inclusionModePicker.getSelectionModel().getSelectedItem();
+        if (s.equals("Inclusive")) {
+            inclusionMode = new InclusiveMode();
+            inclusionMode.setToolTip("Can go from any queue to any teller.");
+        } else if (s.equals("Exclusive")) {
+            inclusionMode = new ExclusiveMode();
+            inclusionMode.setToolTip("A teller owns a queue but can take from others if free.");
+        } else if (s.equals("Strict Exclusive")) {
+            inclusionMode = new StrictExclusiveMode();
+            inclusionMode.setToolTip("A teller owns a queue and will not take from other queues.");
+        } else {
+            inclusionMode = null;
+            inclusionMode.setToolTip("Err");
+        }
+        inclusionToolTip.setText(inclusionMode.getToolTip());
+    }
+
     private void populateWithDefaultBankServices () {
 
         bankServiceList.getItems().add(new BankService("Withdrawal", 10));
-        bankServiceList.getItems().add(new BankService("Deposit", 20));
-        bankServiceList.getItems().add(new BankService("Loan", 40));
-        bankServiceList.getItems().add(new BankService("Transfer", 60));
-        bankServiceList.getItems().add(new BankService("CustomerCare", 120));
+        //bankServiceList.getItems().add(new BankService("Deposit", 20));
+        //bankServiceList.getItems().add(new BankService("Loan", 40));
+        //bankServiceList.getItems().add(new BankService("Transfer", 60));
+        //bankServiceList.getItems().add(new BankService("CustomerCare", 120));
         bankServiceList.getItems().add(new BankService("Inquiry", 180));
 
     }
@@ -157,7 +163,8 @@ public class SimulationSettingsController {
         bankServiceList.getItems().removeAll(bankServiceList.getItems());
     }
 
-    private Boolean validateInputFields () { // return true if inputs are valid, otherwise return false.
+    private Boolean validateInputFields () {
+        // return true if inputs are valid, otherwise return false.
         return true;
     }
 
@@ -172,11 +179,11 @@ public class SimulationSettingsController {
                 queueAmount.getValue(),
                 simulationTime.getValue(),
                 simulationSpeed.getValue(),
-                strictExclusivity.isSelected(),
-                (custumerArrivalIntervalMode.getValue().toString().equals("Static"))?
-                        new StaticInterval(customerStaticInterval.getValue())
-                        :
-                        new RandomInterval(customerRandomIntervalMin.getValue(), customerRandomIntervalMax.getValue()),
+                inclusionMode,
+                (customerArrivalIntervalMode.getSelectionModel().getSelectedItem().equals("Static"))?
+                    new StaticIntervalMode(customerStaticInterval.getValue())
+                    :
+                    new RandomIntervalMode(customerRandomIntervalMin.getValue(), customerRandomIntervalMax.getValue()),
                 new ArrayList<>(bankServiceList.getItems())
         );
 

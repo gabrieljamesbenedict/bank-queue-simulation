@@ -1,4 +1,4 @@
-package org.gjbmloslos.bankqueuesim.entity.customer;
+package org.gjbmloslos.bankqueuesim.manager.customer;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,7 +9,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
-import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
+import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
+import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -20,15 +21,15 @@ import static org.gjbmloslos.bankqueuesim.SimulationController.time;
 public class CustomerSpawnManager {
 
     private ArrayList<Customer> costumerBufferList;
-    private Interval spawnInterval;
+    private IntervalMode spawnIntervalMode;
     private ArrayList<BankService> bankServiceList;
 
     private ScheduledExecutorService customerSpawnManagerService;
     Runnable bufferCustomer;
 
-    public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, Interval spawnInterval, ArrayList<BankService> bankServiceList) {
+    public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, IntervalMode spawnIntervalMode, ArrayList<BankService> bankServiceList) {
         this.costumerBufferList = costumerBufferList;
-        this.spawnInterval = spawnInterval;
+        this.spawnIntervalMode = spawnIntervalMode;
         this.bankServiceList = bankServiceList;
 
         customerSpawnManagerService = Executors.newSingleThreadScheduledExecutor();
@@ -39,14 +40,14 @@ public class CustomerSpawnManager {
     }
 
     public void startCustomerSpawnService () {
-        System.out.println("Started Customer Spawn Service. Interval: " + spawnInterval.getTimeInterval() + "s" + " " + timestamp());
+        System.out.println("Started Customer Spawn Service. Interval: " + spawnIntervalMode.getTimeInterval() + "s" + " " + timestamp());
         spawnCustomer(0);
     }
 
     private void spawnCustomer (int id) {
         if (customerSpawnManagerService.isShutdown()) return;
 
-        int delayInterval = (spawnInterval.getNextCustomerArrivalTime()*1000) / speed;
+        int delayInterval = (spawnIntervalMode.getNextCustomerArrivalTime()*1000) / speed;
 
         bufferCustomer = () -> {
             Customer c = new Customer(id);
@@ -62,7 +63,7 @@ public class CustomerSpawnManager {
             l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
             c.setLabelRef(l);
             costumerBufferList.add(c);
-            System.out.println("Spawned Customer" + c.getId() + " with Service:" + bs.getServiceName() + " after " + delayInterval + "s " + timestamp());
+            System.out.println("Spawned Customer" + c.getId() + " with Service:" + bs.getServiceName() + " after " + delayInterval + "ms " + timestamp());
             spawnCustomer(id + 1);
         };
 

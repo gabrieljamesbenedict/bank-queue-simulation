@@ -1,8 +1,12 @@
-package org.gjbmloslos.bankqueuesim.entity.customer;
+package org.gjbmloslos.bankqueuesim.manager.customer;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusiveMode;
+import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
+import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,6 +24,7 @@ public class CustomerQueueManager {
     ArrayList<CustomerQueue> customerQueueList;
 
     ScheduledExecutorService customerQueueService;
+
     Runnable addCustomerToQueueTask = () -> {
         CustomerQueue cq = customerQueueList
                 .stream()
@@ -35,13 +40,21 @@ public class CustomerQueueManager {
     };
 
     Runnable cleanQueueTask = () -> {
-        Iterator<CustomerQueue> cqi = customerQueueList.iterator();
-        while (cqi.hasNext()) {
-            CustomerQueue cq = cqi.next();
-            Queue<Customer> q = cq.customerQueue;
-            VBox qc = cq.getCustomerQueueContainer();
-            q.stream().filter(e -> e.getRemainingDuration() <= 0).forEach(q::remove);
-            qc.getChildren().stream().map(e -> (Label)e).filter(e -> e.getText().contains("-0s")).forEach(e -> qc.getChildren().remove(e));
+        try {
+            Iterator<CustomerQueue> cqi = customerQueueList.iterator();
+            while (cqi.hasNext()) {
+                CustomerQueue cq = cqi.next();
+                Queue<Customer> q = cq.getCustomerQueue();
+                VBox qc = cq.getCustomerQueueContainer();
+                Platform.runLater(() -> {
+                    //System.out.println("HELLO WORLD");
+                    q.stream().filter(e -> e.getRemainingDuration() <= 0).forEach(q::remove);
+                    qc.getChildren().stream().map(e -> (Label)e).filter(e -> e.getText().contains("-0s")).forEach(e -> qc.getChildren().remove(e));
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     };
 

@@ -1,6 +1,6 @@
-package org.gjbmloslos.bankqueuesim.entity.interval;
+package org.gjbmloslos.bankqueuesim.component.interval;
 
-public interface Interval {
+public interface IntervalMode {
 
     public String getMode ();
     public String getTimeInterval ();

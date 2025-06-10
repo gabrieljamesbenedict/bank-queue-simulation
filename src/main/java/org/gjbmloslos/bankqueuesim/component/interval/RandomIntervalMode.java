@@ -1,13 +1,13 @@
-package org.gjbmloslos.bankqueuesim.entity.interval;
+package org.gjbmloslos.bankqueuesim.component.interval;
 
 import java.util.Random;
 
-public class RandomInterval implements Interval {
+public class RandomIntervalMode implements IntervalMode {
 
     int intervalMin, intervalMax;
     Random rand;
 
-    public RandomInterval(int intervalMin, int intervalMax) {
+    public RandomIntervalMode(int intervalMin, int intervalMax) {
         this.intervalMin = intervalMin;
         this.intervalMax = intervalMax;
         rand = new Random();

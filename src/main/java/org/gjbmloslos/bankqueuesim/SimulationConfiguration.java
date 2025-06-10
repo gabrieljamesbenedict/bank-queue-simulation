@@ -1,49 +1,50 @@
 package org.gjbmloslos.bankqueuesim;
 
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
-import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
+import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
 
 import java.util.ArrayList;
 
 public class SimulationConfiguration {
 
     int tellerAmount, queueAmount, simulationTime, simulationSpeed;
-    Boolean strictExclusivity;
-    Interval interval;
+    InclusionMode inclusionMode;
+    IntervalMode intervalMode;
     ArrayList<BankService> bankServiceList;
 
-    public SimulationConfiguration(int tellerAmount, int queueAmount, int simulationTime, int simulationSpeed, Boolean strictExclusivity, Interval interval, ArrayList<BankService> bankServiceList) {
+    public SimulationConfiguration(int tellerAmount, int queueAmount, int simulationTime, int simulationSpeed, InclusionMode inclusionMode, IntervalMode intervalMode, ArrayList<BankService> bankServiceList) {
         this.tellerAmount = tellerAmount;
         this.queueAmount = queueAmount;
         this.simulationTime = simulationTime;
         this.simulationSpeed = simulationSpeed;
-        this.strictExclusivity = strictExclusivity;
-        this.interval = interval;
+        this.inclusionMode = inclusionMode;
+        this.intervalMode = intervalMode;
         this.bankServiceList = bankServiceList;
     }
 
-    public int getTellerAmount() {
-        return tellerAmount;
+    public ArrayList<BankService> getBankServiceList() {
+        return bankServiceList;
     }
 
-    public void setTellerAmount(int tellerAmount) {
-        this.tellerAmount = tellerAmount;
+    public void setBankServiceList(ArrayList<BankService> bankServiceList) {
+        this.bankServiceList = bankServiceList;
     }
 
-    public int getQueueAmount() {
-        return queueAmount;
+    public IntervalMode getIntervalMode() {
+        return intervalMode;
     }
 
-    public void setQueueAmount(int queueAmount) {
-        this.queueAmount = queueAmount;
+    public void setIntervalMode(IntervalMode intervalMode) {
+        this.intervalMode = intervalMode;
     }
 
-    public int getSimulationTime() {
-        return simulationTime;
+    public InclusionMode getInclusionMode() {
+        return inclusionMode;
     }
 
-    public void setSimulationTime(int simulationTime) {
-        this.simulationTime = simulationTime;
+    public void setInclusionMode(InclusionMode inclusionMode) {
+        this.inclusionMode = inclusionMode;
     }
 
     public int getSimulationSpeed() {
@@ -54,27 +55,27 @@ public class SimulationConfiguration {
         this.simulationSpeed = simulationSpeed;
     }
 
-    public Boolean getStrictExclusivity() {
-        return strictExclusivity;
+    public int getSimulationTime() {
+        return simulationTime;
     }
 
-    public void setStrictExclusivity(Boolean strictExclusivity) {
-        this.strictExclusivity = strictExclusivity;
+    public void setSimulationTime(int simulationTime) {
+        this.simulationTime = simulationTime;
     }
 
-    public Interval getInterval() {
-        return interval;
+    public int getQueueAmount() {
+        return queueAmount;
     }
 
-    public void setInterval(Interval interval) {
-        this.interval = interval;
+    public void setQueueAmount(int queueAmount) {
+        this.queueAmount = queueAmount;
     }
 
-    public ArrayList<BankService> getBankServiceList() {
-        return bankServiceList;
+    public int getTellerAmount() {
+        return tellerAmount;
     }
 
-    public void setBankServiceList(ArrayList<BankService> bankServiceList) {
-        this.bankServiceList = bankServiceList;
+    public void setTellerAmount(int tellerAmount) {
+        this.tellerAmount = tellerAmount;
     }
 }

@@ -5,7 +5,8 @@ module org.gjbmloslos.bankqueuesim {
 
     exports org.gjbmloslos.bankqueuesim;
     opens org.gjbmloslos.bankqueuesim to javafx.base, javafx.fxml;
-    opens org.gjbmloslos.bankqueuesim.entity.interval to javafx.base;
     opens org.gjbmloslos.bankqueuesim.entity.customer to javafx.base;
     opens org.gjbmloslos.bankqueuesim.entity.bank to javafx.base;
+    opens org.gjbmloslos.bankqueuesim.manager.bank to javafx.base;
+    opens org.gjbmloslos.bankqueuesim.manager.customer to javafx.base;
 }

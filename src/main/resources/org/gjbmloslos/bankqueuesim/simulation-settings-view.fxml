@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
+<VBox minHeight="650.0" minWidth="650.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationSettingsController">
    <padding>
       <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
    </padding>
@@ -54,18 +54,18 @@
                </padding>
             </HBox>
             <HBox fx:id="exclusivityContainer" alignment="CENTER_LEFT" spacing="10.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity" />
-                  <CheckBox fx:id="strictExclusivity" mnemonicParsing="false" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(If enabled, tellers will never share queue lines. Only available when amount of tellers and queues match)">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Text>
-               </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Mode" />
+                  <ComboBox fx:id="inclusionModePicker" onAction="#changeInclusionMode" />
+                  <Label fx:id="inclusionToolTip" text="Label">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+               </children>
             </HBox>
          </children>
       </VBox>
@@ -74,7 +74,7 @@
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Arrival Interval Mode" />
-                  <ComboBox fx:id="custumerArrivalIntervalMode" onAction="#toggleIntervalMode" prefWidth="150.0" />
+                  <ComboBox fx:id="customerArrivalIntervalMode" onAction="#toggleIntervalMode" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

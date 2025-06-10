@@ -1,7 +1,8 @@
-package org.gjbmloslos.bankqueuesim.entity.bank;
+package org.gjbmloslos.bankqueuesim.manager.bank;
 
 import javafx.application.Platform;
-import javafx.scene.control.Label;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
+import org.gjbmloslos.bankqueuesim.entity.bank.BankTeller;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 
@@ -22,19 +23,21 @@ public class BankTellerManager {
 
     ArrayList<BankTeller> bankTellerList;
     ArrayList<CustomerQueue> customerQueueList;
+    InclusionMode bankTellerInclusionMode;
 
     ArrayList<BankTeller> availableBankTellerList;
-
-    Semaphore addCustomerTaskGuard = new Semaphore(1);
-    Semaphore removeCustomerTaskGuard = new Semaphore(1);
+    Semaphore bankTellerGuard = new Semaphore(1);
 
     ScheduledThreadPoolExecutor bankTellerManagerService;
     Runnable manageBankTellerTask;
 
-    public BankTellerManager(ArrayList<BankTeller> bankTellerList, ArrayList<CustomerQueue> customerQueueList) {
+    public BankTellerManager(ArrayList<BankTeller> bankTellerList, InclusionMode bankTellerInclusionMode, ArrayList<CustomerQueue> customerQueueList) {
         this.bankTellerList = bankTellerList;
         this.customerQueueList = customerQueueList;
+        this.bankTellerInclusionMode = bankTellerInclusionMode;
 
+        bankTellerInclusionMode.setBankTellerList(bankTellerList);
+        bankTellerInclusionMode.setCustomerQueueList(customerQueueList);
         completedCustomers = 0;
         availableBankTellerList = new ArrayList<>(bankTellerList);
         bankTellerManagerService = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(4);
@@ -48,37 +51,7 @@ public class BankTellerManager {
         System.out.println("Started Bank Teller Manager Service" + " " + timestamp());
 
         Runnable addCustomerToTeller = () -> {
-            if (availableBankTellerList.isEmpty()) return;
-
-            try {
-                addCustomerTaskGuard.acquire();
-            } catch (InterruptedException e) {e.printStackTrace();}
-
-            BankTeller bt = availableBankTellerList
-                    .stream()
-                    .filter(e -> !e.busy)
-                    .toList()
-                    .getFirst();
-
-            addCustomerTaskGuard.release();
-
-            Iterator<CustomerQueue> cqi = customerQueueList.iterator();
-            while (cqi.hasNext()) {
-                CustomerQueue cq = cqi.next();
-                if (cq.getCustomerQueue().isEmpty()) continue;
-                Customer c = cq.getCustomerQueue().remove();
-                bt.setCurrentCustomer(c);
-                Platform.runLater(() -> {
-                    if (bt.getTellerBox().getChildren().size() > 1)
-                        bt.getTellerBox().getChildren().set(1, c.getLabelRef());
-                    else
-                        bt.getTellerBox().getChildren().add(c.getLabelRef());
-
-                });
-                bt.setBusy(true);
-                availableBankTellerList.remove(bt);
-                System.out.println("Added Customer" + c.getId() + " from CustomerQueue" + c.getCustomerQueue().getId() + " to BankTeller" + bt.getId() + " " + timestamp());
-            }
+            bankTellerInclusionMode.assignCustomerToTeller(availableBankTellerList);
         };
 
         Runnable processCostumerAtTeller = () -> {
@@ -95,14 +68,14 @@ public class BankTellerManager {
                 Platform.runLater(() -> finalC.getLabelRef().setText(finalC.toString()));
                 if (reducedDuration <= 0) {
                     try {
-                        removeCustomerTaskGuard.acquire();
+                        bankTellerGuard.acquire();
                         System.out.println("Customer"+c.getId() + " has completed Service:" + c.getService().getServiceName() + " " + timestamp());
                         completedCustomers++;
                         c = null; // Completely destroy the costumer (I'll probably make a completed list later to store all completed customers)
                         Platform.runLater(bt::defaultCustomerLabel);
                         bt.setBusy(false);
                         availableBankTellerList.add(bt);
-                        removeCustomerTaskGuard.release();
+                        bankTellerGuard.release();
                     } catch (InterruptedException e) {e.printStackTrace();}
                 }
             }

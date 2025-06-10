@@ -44,7 +44,7 @@
                   </HBox>
                   <HBox spacing="10.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed:" />
                         <Text fx:id="textSimulationSpeed" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                      </children>
                   </HBox>
@@ -70,8 +70,8 @@
                   </HBox>
                   <HBox spacing="10.0">
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Strict Exclusivity:" />
-                        <Text fx:id="textStrictExclusivity" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Mode" />
+                        <Text fx:id="textInclusionMode" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                      </children>
                   </HBox>
                   <HBox spacing="10.0">

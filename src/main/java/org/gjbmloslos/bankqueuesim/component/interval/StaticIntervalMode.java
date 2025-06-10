@@ -1,10 +1,10 @@
-package org.gjbmloslos.bankqueuesim.entity.interval;
+package org.gjbmloslos.bankqueuesim.component.interval;
 
-public class StaticInterval implements Interval {
+public class StaticIntervalMode implements IntervalMode {
 
     int interval;
 
-    public StaticInterval(int interval) {
+    public StaticIntervalMode(int interval) {
         this.interval = interval;
     }
 

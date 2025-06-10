@@ -3,19 +3,20 @@ package org.gjbmloslos.bankqueuesim;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import org.gjbmloslos.bankqueuesim.component.inclusion.StrictExclusiveMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
+import org.gjbmloslos.bankqueuesim.component.inclusion.InclusiveMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
-import org.gjbmloslos.bankqueuesim.entity.bank.BankTellerManager;
+import org.gjbmloslos.bankqueuesim.manager.bank.BankTellerManager;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
 import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
-import org.gjbmloslos.bankqueuesim.entity.customer.CustomerSpawnManager;
-import org.gjbmloslos.bankqueuesim.entity.interval.Interval;
-import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueueManager;
+import org.gjbmloslos.bankqueuesim.manager.customer.CustomerSpawnManager;
+import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
+import org.gjbmloslos.bankqueuesim.manager.customer.CustomerQueueManager;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankTeller;
 
 import java.util.ArrayDeque;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 public class SimulationController {
 
@@ -33,8 +33,8 @@ public class SimulationController {
     public static int speed;
 
     int tellerAmount, queueAmount, simulationTime;
-    Boolean strictExclusivity;
-    Interval customerInterval;
+    IntervalMode customerIntervalMode;
+    InclusionMode bankTellerInclusionMode;
     ArrayList<BankService> bankServiceList;
 
     @FXML Text simulationStatus;
@@ -44,14 +44,13 @@ public class SimulationController {
     @FXML Text textSimulationSpeed;
     @FXML Text textTellerAmount;
     @FXML Text textQueueAmount;
-    @FXML Text textStrictExclusivity;
+    @FXML Text textInclusionMode;
     @FXML Text textIntervalMode;
     @FXML Text textIntervalTime;
     @FXML ListView<String> lvBankService;
 
     @FXML HBox tellerRow;
     @FXML HBox queueRow;
-
 
     ScheduledExecutorService timeRunnerService;
     Runnable timeRunner;
@@ -77,9 +76,9 @@ public class SimulationController {
 
         tellerAmount = Simulation.configuration.getTellerAmount();
         queueAmount = Simulation.configuration.getQueueAmount();
+        bankTellerInclusionMode = Simulation.configuration.getInclusionMode();
         simulationTime = Simulation.configuration.getSimulationTime();
-        strictExclusivity = Simulation.configuration.getStrictExclusivity();
-        customerInterval = Simulation.configuration.getInterval();
+        customerIntervalMode = Simulation.configuration.getIntervalMode();
         bankServiceList = Simulation.configuration.getBankServiceList();
 
         textMaxSimTime.setText(Integer.toString(simulationTime));
@@ -89,9 +88,9 @@ public class SimulationController {
         textSimulationSpeed.setText(Integer.toString(speed));
         textTellerAmount.setText(Integer.toString(tellerAmount));
         textQueueAmount.setText(Integer.toString(queueAmount));
-        textStrictExclusivity.setText(Boolean.toString(strictExclusivity));
-        textIntervalMode.setText(customerInterval.getMode());
-        textIntervalTime.setText(customerInterval.getTimeInterval());
+        textInclusionMode.setText(bankTellerInclusionMode.getMode());
+        textIntervalMode.setText(customerIntervalMode.getMode());
+        textIntervalTime.setText(customerIntervalMode.getTimeInterval());
 
         List<String> serviceList = bankServiceList.stream().map(e -> {
             return e.getServiceName() + " - " + e.getServiceDuration() + "s";
@@ -126,9 +125,9 @@ public class SimulationController {
 
         timeRunnerService = Executors.newSingleThreadScheduledExecutor();
 
-        customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerInterval, bankServiceList);
+        customerSpawnManager = new CustomerSpawnManager(customerBufferList, customerIntervalMode, bankServiceList);
         customerQueueManager = new CustomerQueueManager(customerBufferList, customerQueueList);
-        bankTellerManager = new BankTellerManager(bankTellerList, customerQueueList);
+        bankTellerManager = new BankTellerManager(bankTellerList, bankTellerInclusionMode, customerQueueList);
 
         simulationTime += 1; // sim time padding
     }

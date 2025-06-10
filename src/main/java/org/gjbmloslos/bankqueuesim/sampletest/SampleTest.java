@@ -1,4 +1,4 @@
-package org.gjbmloslos.bankqueuesim.sample;
+package org.gjbmloslos.bankqueuesim.sampletest;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
