@@ -77,7 +77,7 @@ public class BankTellerManager {
                 });
                 bt.setBusy(true);
                 availableBankTellerList.remove(bt);
-                System.out.println("Added Customer" + c.getId() + " from CustomerQueue" + c.getCustomerQueue().getId() + " to BankTeller" + bt.getId());
+                System.out.println("Added Customer" + c.getId() + " from CustomerQueue" + c.getCustomerQueue().getId() + " to BankTeller" + bt.getId() + " " + timestamp());
             }
         };
 
@@ -96,7 +96,7 @@ public class BankTellerManager {
                 if (reducedDuration <= 0) {
                     try {
                         removeCustomerTaskGuard.acquire();
-                        System.out.println("Customer"+c.getId() + " has completed Service:" + c.getService().getServiceName());
+                        System.out.println("Customer"+c.getId() + " has completed Service:" + c.getService().getServiceName() + " " + timestamp());
                         completedCustomers++;
                         c = null; // Completely destroy the costumer (I'll probably make a completed list later to store all completed customers)
                         Platform.runLater(bt::defaultCustomerLabel);

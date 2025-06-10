@@ -20,9 +20,11 @@ import org.gjbmloslos.bankqueuesim.entity.bank.BankTeller;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class SimulationController {
 
@@ -45,7 +47,7 @@ public class SimulationController {
     @FXML Text textStrictExclusivity;
     @FXML Text textIntervalMode;
     @FXML Text textIntervalTime;
-    @FXML ListView<BankService> lvBankService;
+    @FXML ListView<String> lvBankService;
 
     @FXML HBox tellerRow;
     @FXML HBox queueRow;
@@ -83,13 +85,18 @@ public class SimulationController {
         textMaxSimTime.setText(Integer.toString(simulationTime));
         textElapsedSimTime.setText(Integer.toString(time));
         textElapsedSimTime.setText(Integer.toString(time));
+        textActualElapsedTime.setText(Integer.toString(actualTime));
         textSimulationSpeed.setText(Integer.toString(speed));
         textTellerAmount.setText(Integer.toString(tellerAmount));
         textQueueAmount.setText(Integer.toString(queueAmount));
         textStrictExclusivity.setText(Boolean.toString(strictExclusivity));
         textIntervalMode.setText(customerInterval.getMode());
         textIntervalTime.setText(customerInterval.getTimeInterval());
-        lvBankService.getItems().addAll(bankServiceList);
+
+        List<String> serviceList = bankServiceList.stream().map(e -> {
+            return e.getServiceName() + " - " + e.getServiceDuration() + "s";
+        }).toList();
+        lvBankService.getItems().addAll(serviceList);
 
         bankTellerList = new ArrayList<>();
         for (int i = 0; i < tellerAmount; i++) {

@@ -10,10 +10,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.45" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
+<SplitPane dividerPositions="0.45" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
    <items>
       <VBox prefHeight="398.0" prefWidth="247.0" spacing="15.0" style="-fx-background-color: lightgray;" SplitPane.resizableWithParent="false">
          <children>
+            <HBox spacing="5.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+                  <Button mnemonicParsing="false" text="Pause" />
+                  <Button mnemonicParsing="false" onAction="#end" text="End" />
+               </children>
+            </HBox>
             <VBox spacing="2.0">
                <children>
                   <Text fx:id="simulationStatus" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Ready" />
@@ -87,13 +94,6 @@
                   <ListView fx:id="lvBankService" prefHeight="150.0" />
                </children>
             </VBox>
-            <HBox spacing="2.0">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
-                  <Button mnemonicParsing="false" text="Pause" />
-                  <Button mnemonicParsing="false" onAction="#end" text="End" />
-               </children>
-            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />

@@ -1,9 +1,13 @@
 package org.gjbmloslos.bankqueuesim.entity.customer;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -26,8 +30,19 @@ public class CustomerQueueManager {
         cq.getCustomerQueue().add(c);
         c.setCustomerQueue(cq);
         Platform.runLater(() -> cq.getCustomerQueueContainer().getChildren().add(c.getLabelRef()));
-        System.out.println("Added Customer" + c.getId() + " to CustomerQueue" + cq.getId());
+        System.out.println("Added Customer" + c.getId() + " to CustomerQueue" + cq.getId() + " " + timestamp());
         //System.out.println("CustomerQueue" + cq.getId() + ": " + cq.getCustomerQueue().stream().map(Customer::getId).toList());
+    };
+
+    Runnable cleanQueueTask = () -> {
+        Iterator<CustomerQueue> cqi = customerQueueList.iterator();
+        while (cqi.hasNext()) {
+            CustomerQueue cq = cqi.next();
+            Queue<Customer> q = cq.customerQueue;
+            VBox qc = cq.getCustomerQueueContainer();
+            q.stream().filter(e -> e.getRemainingDuration() <= 0).forEach(q::remove);
+            qc.getChildren().stream().map(e -> (Label)e).filter(e -> e.getText().contains("-0s")).forEach(e -> qc.getChildren().remove(e));
+        }
     };
 
     public CustomerQueueManager(ArrayList<Customer> costumerBufferList, ArrayList<CustomerQueue> customerQueueList) {
@@ -49,7 +64,9 @@ public class CustomerQueueManager {
                 customerQueueService.submit(addCustomerToQueueTask);
             }
         };
+
         customerQueueService.scheduleWithFixedDelay(queueManagerTask, 0, 10, TimeUnit.MILLISECONDS);
+        customerQueueService.scheduleWithFixedDelay(cleanQueueTask, 0, 5, TimeUnit.SECONDS);
     }
 
     public void endCustomerQueueService () {
