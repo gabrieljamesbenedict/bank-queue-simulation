@@ -10,14 +10,20 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SimulationSettings extends Application {
+
+    static Stage stage;
+
     @Override
     public void start(Stage stage) throws IOException {
+
+        SimulationSettings.stage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(SimulationSettings.class.getResource("simulation-settings-view.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         stage.setTitle("Set Configuration");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
 
         stage.setOnCloseRequest(event -> {

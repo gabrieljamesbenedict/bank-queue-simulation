@@ -7,15 +7,16 @@ import java.util.ArrayList;
 
 public class SimulationConfiguration {
 
-    int tellerAmount, queueAmount, simulationTime;
+    int tellerAmount, queueAmount, simulationTime, simulationSpeed;
     Boolean strictExclusivity;
     Interval interval;
     ArrayList<BankService> bankServiceList;
 
-    public SimulationConfiguration(int tellerAmount, int queueAmount, int simulationTime, Boolean strictExclusivity, Interval interval, ArrayList<BankService> bankServiceList) {
+    public SimulationConfiguration(int tellerAmount, int queueAmount, int simulationTime, int simulationSpeed, Boolean strictExclusivity, Interval interval, ArrayList<BankService> bankServiceList) {
         this.tellerAmount = tellerAmount;
         this.queueAmount = queueAmount;
         this.simulationTime = simulationTime;
+        this.simulationSpeed = simulationSpeed;
         this.strictExclusivity = strictExclusivity;
         this.interval = interval;
         this.bankServiceList = bankServiceList;
@@ -43,6 +44,14 @@ public class SimulationConfiguration {
 
     public void setSimulationTime(int simulationTime) {
         this.simulationTime = simulationTime;
+    }
+
+    public int getSimulationSpeed() {
+        return simulationSpeed;
+    }
+
+    public void setSimulationSpeed(int simulationSpeed) {
+        this.simulationSpeed = simulationSpeed;
     }
 
     public Boolean getStrictExclusivity() {

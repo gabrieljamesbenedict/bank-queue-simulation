@@ -5,13 +5,14 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane dividerPositions="0.35" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
+<SplitPane dividerPositions="0.3" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
    <items>
-      <VBox spacing="15.0" style="-fx-background-color: lightgray;">
+      <VBox prefHeight="398.0" prefWidth="247.0" spacing="15.0" style="-fx-background-color: lightgray;" SplitPane.resizableWithParent="false">
          <children>
             <VBox spacing="2.0">
                <children>
@@ -26,6 +27,12 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Elapsed Sim Time:" />
                         <Text fx:id="textElapsedSimTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="10.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed" />
+                        <Text fx:id="textSimulationSpeed" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
                      </children>
                   </HBox>
                </children>
@@ -74,28 +81,42 @@
                   <ListView fx:id="lvBankService" prefHeight="150.0" />
                </children>
             </VBox>
-            <VBox spacing="2.0">
+            <HBox spacing="2.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#beginSimulation" text="Begin Simulation" />
+                  <Button mnemonicParsing="false" onAction="#begin" text="Begin" />
+                  <Button mnemonicParsing="false" text="Pause" />
+                  <Button mnemonicParsing="false" onAction="#end" text="End" />
                </children>
-            </VBox>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
          </padding>
       </VBox>
-      <ScrollPane>
-         <content>
-            <VBox spacing="25.0">
-               <children>
-                  <HBox fx:id="tellerRow" spacing="15.0" style="-fx-background-color: lightgray;" />
-                  <HBox fx:id="queueRow" spacing="15.0" style="-fx-background-color: lightgray;" />
-               </children>
-            </VBox>
-         </content>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </ScrollPane>
+      <AnchorPane>
+         <children>
+            <ScrollPane fx:id="sp" fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <VBox spacing="10.0">
+                     <children>
+                        <HBox fx:id="tellerRow" spacing="10.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="queueRow" prefWidth="375.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
    </items>
 </SplitPane>

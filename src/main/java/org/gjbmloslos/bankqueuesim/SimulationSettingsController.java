@@ -27,6 +27,7 @@ public class SimulationSettingsController {
     @FXML HBox randomIntervalContainer;
 
     @FXML Spinner<Integer> simulationTime;
+    @FXML Spinner<Integer> simulationSpeed;
 
     @FXML TextField serviceNameInput;
     @FXML TextField serviceDurationInput;
@@ -66,9 +67,11 @@ public class SimulationSettingsController {
                 customerRandomIntervalMax,
                 simulationTime
         };
-        for (Spinner spinner : spinners) {
-            spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory (1, Integer.MAX_VALUE));
+        for (Spinner s : spinners) {
+            s.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory (1, Integer.MAX_VALUE));
         }
+        simulationTime.getValueFactory().setValue(60);
+        simulationSpeed.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory (1, 100));
 
         toggleStrictExclusivity();
         tellerAmount.valueProperty().addListener(new ChangeListener<Integer>() {
@@ -166,6 +169,7 @@ public class SimulationSettingsController {
                 tellerAmount.getValue(),
                 queueAmount.getValue(),
                 simulationTime.getValue(),
+                simulationSpeed.getValue(),
                 strictExclusivity.isSelected(),
                 (custumerArrivalIntervalMode.getValue().toString().equals("Static"))?
                         new StaticInterval(customerStaticInterval.getValue())

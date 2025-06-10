@@ -1,5 +1,6 @@
 package org.gjbmloslos.bankqueuesim;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,8 +28,17 @@ public class Simulation {
         simStage = new Stage();
         Scene scene = new Scene(root);
         simStage.setTitle("Bank Queue Simulation");
+        simStage.setResizable(true);
         simStage.setScene(scene);
         simStage.show();
+
+        SimulationSettings.stage.hide();
+
+        simStage.setOnCloseRequest(event -> {
+            SimulationSettings.stage.show();
+
+
+        });
     }
 
 }
