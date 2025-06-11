@@ -6,13 +6,17 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <SplitPane dividerPositions="0.45" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.gjbmloslos.bankqueuesim.SimulationController">
    <items>
-      <VBox prefHeight="398.0" prefWidth="247.0" spacing="15.0" style="-fx-background-color: lightgray;" SplitPane.resizableWithParent="false">
+      <VBox fillWidth="false" spacing="15.0" style="-fx-background-color: lightgray;" SplitPane.resizableWithParent="false">
          <children>
             <HBox spacing="5.0">
                <children>
@@ -23,31 +27,58 @@
             </HBox>
             <VBox spacing="2.0">
                <children>
-                  <Text fx:id="simulationStatus" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Ready" />
-                  <HBox spacing="10.0">
+                  <Text fx:id="simulationStatus" strokeType="OUTSIDE" strokeWidth="0.0" text="Simulation Ready">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Text>
+                  <GridPane prefWidth="400.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max Sim Time:" />
-                        <Text fx:id="textMaxSimTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max Sim Time:">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Elapsed Sim Time:" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed:" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Actual Elapsed Time:" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Text>
+                        <Text fx:id="textMaxSimTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
+                        <Text fx:id="textElapsedSimTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Text>
+                        <Text fx:id="textActualElapsedTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
+                        <Text fx:id="textSimulationSpeed" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin></Text>
                      </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Elapsed Sim Time:" />
-                        <Text fx:id="textElapsedSimTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Actual Elapsed Time:" />
-                        <Text fx:id="textActualElapsedTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sim Speed:" />
-                        <Text fx:id="textSimulationSpeed" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
+                  </GridPane>
                </children>
                <VBox.margin>
                   <Insets />
@@ -55,43 +86,83 @@
             </VBox>
             <VBox spacing="2.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Settings" />
-                  <HBox spacing="10.0">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Settings">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Text>
+                  <GridPane prefWidth="400.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teller Amount:" />
-                        <Text fx:id="textTellerAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interval Time:" GridPane.rowIndex="4" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interval Mode:" GridPane.rowIndex="3" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Mode" GridPane.rowIndex="2" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queue Amount:" GridPane.rowIndex="1" />
+                        <Text fx:id="textIntervalTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Text fx:id="textIntervalMode" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Text fx:id="textInclusionMode" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Text fx:id="textQueueAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Text fx:id="textTellerAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
                      </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Queue Amount:" />
-                        <Text fx:id="textQueueAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Mode" />
-                        <Text fx:id="textInclusionMode" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interval Mode:" />
-                        <Text fx:id="textIntervalMode" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
-                  <HBox spacing="10.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interval Time:" />
-                        <Text fx:id="textIntervalTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                     </children>
-                  </HBox>
+                  </GridPane>
                </children>
             </VBox>
             <VBox spacing="2.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank Services" />
-                  <ListView fx:id="lvBankService" prefHeight="150.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank Services">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Text>
+                  <ListView fx:id="lvBankService" maxWidth="250.0" prefHeight="125.0" />
+               </children>
+            </VBox>
+            <VBox spacing="2.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statistics">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <GridPane prefWidth="400.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[INPUT] Customers Total:" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[OUTPUT] Customers Completed:" GridPane.rowIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Average Turn Around Time: " GridPane.rowIndex="4" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Average Waiting Time: " GridPane.rowIndex="3" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="[THROUGHPUT] Completion Rate: " GridPane.rowIndex="2" />
+                        <Text fx:id="textCustomersCompleted" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Text fx:id="textCompletionRate" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Text fx:id="textAverageWaitingTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Text fx:id="textAverageTurnAroundTime" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Text fx:id="textCustomersTotal" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <HBox spacing="10.0" />
+                  <HBox spacing="10.0" />
+                  <HBox spacing="10.0" />
+                  <HBox spacing="10.0" />
+                  <HBox spacing="10.0" />
                </children>
             </VBox>
          </children>

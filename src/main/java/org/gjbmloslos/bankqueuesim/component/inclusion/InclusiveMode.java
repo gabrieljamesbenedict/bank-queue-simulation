@@ -38,6 +38,7 @@ public class InclusiveMode extends InclusionMode{
             Customer c = cq.getCustomerQueue().remove();
 
             System.out.println(log(c,bt));
+            c.setProcessing(true);
             bt.setCurrentCustomer(c);
             Platform.runLater(() -> {
                 if (bt.getTellerBox().getChildren().size() > 1)

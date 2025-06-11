@@ -36,6 +36,7 @@ public class ExclusiveMode extends InclusionMode {
             };
 
             System.out.println(log(c,bt));
+            c.setProcessing(true);
             bt.setCurrentCustomer(c);
             Platform.runLater(() -> {
                 if (bt.getTellerBox().getChildren().size() > 1)

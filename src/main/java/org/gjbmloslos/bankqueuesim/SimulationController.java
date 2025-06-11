@@ -7,9 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.gjbmloslos.bankqueuesim.component.inclusion.StrictExclusiveMode;
 import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
-import org.gjbmloslos.bankqueuesim.component.inclusion.InclusiveMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
 import org.gjbmloslos.bankqueuesim.manager.bank.BankTellerManager;
 import org.gjbmloslos.bankqueuesim.entity.customer.Customer;
@@ -18,10 +16,12 @@ import org.gjbmloslos.bankqueuesim.manager.customer.CustomerSpawnManager;
 import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
 import org.gjbmloslos.bankqueuesim.manager.customer.CustomerQueueManager;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankTeller;
+import org.gjbmloslos.bankqueuesim.simulation.SimulationStatistics;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -47,7 +47,15 @@ public class SimulationController {
     @FXML Text textInclusionMode;
     @FXML Text textIntervalMode;
     @FXML Text textIntervalTime;
+
     @FXML ListView<String> lvBankService;
+
+    @FXML Text textCustomersCompleted;
+    @FXML Text textCustomersTotal;
+    @FXML Text textCompletionRate   ;
+    @FXML Text textAverageWaitingTime;
+    @FXML Text textAverageTurnAroundTime;
+
 
     @FXML HBox tellerRow;
     @FXML HBox queueRow;
@@ -63,6 +71,8 @@ public class SimulationController {
     ArrayList<Customer> customerBufferList;
     ArrayList<CustomerQueue> customerQueueList;
     ArrayList<BankTeller> bankTellerList;
+
+    SimulationStatistics stats;
 
     private String timestamp () {
         return " @" + time + "s";
@@ -130,6 +140,14 @@ public class SimulationController {
         bankTellerManager = new BankTellerManager(bankTellerList, bankTellerInclusionMode, customerQueueList);
 
         simulationTime += 1; // sim time padding
+
+        stats = new SimulationStatistics(
+                textCustomersCompleted,
+                textCustomersTotal,
+                textCompletionRate,
+                textAverageWaitingTime,
+                textAverageTurnAroundTime);
+
     }
 
     @FXML public void begin () {
@@ -138,6 +156,8 @@ public class SimulationController {
         customerSpawnManager.startCustomerSpawnService();
         customerQueueManager.startCustomerQueueService();
         bankTellerManager.startBankTellerManageService();
+
+        stats.attachCustomerStatistics(customerSpawnManager, bankTellerManager);
 
         timeRunner = () -> {
             if (time >= simulationTime) {
@@ -149,6 +169,8 @@ public class SimulationController {
                 end(false);
                 timeRunnerService.shutdown();
             }
+            stats.calculateStatistics();
+            stats.calculateThroughput();
             Platform.runLater(() -> textElapsedSimTime.setText(Integer.toString(time)));
             time++;
         };

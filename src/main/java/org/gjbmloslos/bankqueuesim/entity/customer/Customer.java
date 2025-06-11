@@ -12,9 +12,19 @@ public class Customer {
     CustomerQueue customerQueue;
 
     int remainingDuration;
+    boolean processing;
+    boolean completed;
+
+    int waitingTime;
+    int turnAroundTime;
 
     public Customer(int id) {
         this.id = id;
+
+        processing = false;
+        completed = false;
+        waitingTime = 0;
+        turnAroundTime = 0;
     }
 
     public int getId() {
@@ -56,6 +66,38 @@ public class Customer {
 
     public void setRemainingDuration(int remainingDuration) {
         this.remainingDuration = remainingDuration;
+    }
+
+    public boolean isProcessing() {
+        return processing;
+    }
+
+    public void setProcessing(boolean processing) {
+        this.processing = processing;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public int getWaitingTime() {
+        return waitingTime;
+    }
+
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime = waitingTime;
+    }
+
+    public int getTurnAroundTime() {
+        return turnAroundTime;
+    }
+
+    public void setTurnAroundTime(int turnAroundTime) {
+        this.turnAroundTime = turnAroundTime;
     }
 
     @Override

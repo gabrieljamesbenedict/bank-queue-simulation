@@ -12,6 +12,7 @@ import org.gjbmloslos.bankqueuesim.component.interval.IntervalMode;
 import org.gjbmloslos.bankqueuesim.component.interval.RandomIntervalMode;
 import org.gjbmloslos.bankqueuesim.component.interval.StaticIntervalMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
+import org.gjbmloslos.bankqueuesim.simulation.SimulationConfiguration;
 
 import java.util.ArrayList;
 
@@ -123,10 +124,10 @@ public class SimulationSettingsController {
     private void populateWithDefaultBankServices () {
 
         bankServiceList.getItems().add(new BankService("Withdrawal", 10));
-        //bankServiceList.getItems().add(new BankService("Deposit", 20));
-        //bankServiceList.getItems().add(new BankService("Loan", 40));
-        //bankServiceList.getItems().add(new BankService("Transfer", 60));
-        //bankServiceList.getItems().add(new BankService("CustomerCare", 120));
+        bankServiceList.getItems().add(new BankService("Deposit", 20));
+        bankServiceList.getItems().add(new BankService("Loan", 40));
+        bankServiceList.getItems().add(new BankService("Transfer", 60));
+        bankServiceList.getItems().add(new BankService("CustomerCare", 120));
         bankServiceList.getItems().add(new BankService("Inquiry", 180));
 
     }

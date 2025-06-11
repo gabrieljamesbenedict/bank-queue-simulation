@@ -1,10 +1,10 @@
 package org.gjbmloslos.bankqueuesim;
 
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.gjbmloslos.bankqueuesim.simulation.SimulationConfiguration;
 
 import java.io.IOException;
 

@@ -26,6 +26,7 @@ public class BankTellerManager {
     InclusionMode bankTellerInclusionMode;
 
     ArrayList<BankTeller> availableBankTellerList;
+    ArrayList<Customer> tempCompletedCustomerList;
     Semaphore bankTellerGuard = new Semaphore(1);
 
     ScheduledThreadPoolExecutor bankTellerManagerService;
@@ -40,6 +41,7 @@ public class BankTellerManager {
         bankTellerInclusionMode.setCustomerQueueList(customerQueueList);
         completedCustomers = 0;
         availableBankTellerList = new ArrayList<>(bankTellerList);
+        tempCompletedCustomerList = new ArrayList<>();
         bankTellerManagerService = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(4);
     }
 
@@ -70,8 +72,10 @@ public class BankTellerManager {
                     try {
                         bankTellerGuard.acquire();
                         System.out.println("Customer"+c.getId() + " has completed Service:" + c.getService().getServiceName() + " " + timestamp());
-                        completedCustomers++;
-                        c = null; // Completely destroy the costumer (I'll probably make a completed list later to store all completed customers)
+                        setCompletedCustomers(getCompletedCustomers()+1);
+                        //System.out.println("Completed: " + getCompletedCustomers());
+                        c.setCompleted(true);
+                        tempCompletedCustomerList.add(c);
                         Platform.runLater(bt::defaultCustomerLabel);
                         bt.setBusy(false);
                         availableBankTellerList.add(bt);
@@ -89,5 +93,21 @@ public class BankTellerManager {
     public void endBankTellerManageService () {
         System.out.println("Completed Customers: " + completedCustomers);
         bankTellerManagerService.shutdownNow();
+    }
+
+    public int getCompletedCustomers() {
+        return completedCustomers;
+    }
+
+    public void setCompletedCustomers(int completedCustomers) {
+        this.completedCustomers = completedCustomers;
+    }
+
+    public ArrayList<Customer> getTempCompletedCustomerList() {
+        return tempCompletedCustomerList;
+    }
+
+    public void setTempCompletedCustomerList(ArrayList<Customer> tempCompletedCustomerList) {
+        this.tempCompletedCustomerList = tempCompletedCustomerList;
     }
 }

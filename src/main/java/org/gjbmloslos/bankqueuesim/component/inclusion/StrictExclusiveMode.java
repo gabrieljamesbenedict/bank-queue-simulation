@@ -28,6 +28,7 @@ public class StrictExclusiveMode extends InclusionMode{
             Customer c = customerQueueList.get(index).getCustomerQueue().remove();
 
             System.out.println(log(c,bt));
+            c.setProcessing(true);
             bt.setCurrentCustomer(c);
             Platform.runLater(() -> {
                 if (bt.getTellerBox().getChildren().size() > 1)

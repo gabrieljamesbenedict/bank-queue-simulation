@@ -20,11 +20,13 @@ import static org.gjbmloslos.bankqueuesim.SimulationController.time;
 
 public class CustomerSpawnManager {
 
-    private ArrayList<Customer> costumerBufferList;
-    private IntervalMode spawnIntervalMode;
-    private ArrayList<BankService> bankServiceList;
+    private final ArrayList<Customer> costumerBufferList;
+    private final IntervalMode spawnIntervalMode;
+    private final ArrayList<BankService> bankServiceList;
 
-    private ScheduledExecutorService customerSpawnManagerService;
+    private final ArrayList<Customer> customerMasterList;
+
+    private final ScheduledExecutorService customerSpawnManagerService;
     Runnable bufferCustomer;
 
     public CustomerSpawnManager(ArrayList<Customer> costumerBufferList, IntervalMode spawnIntervalMode, ArrayList<BankService> bankServiceList) {
@@ -32,6 +34,7 @@ public class CustomerSpawnManager {
         this.spawnIntervalMode = spawnIntervalMode;
         this.bankServiceList = bankServiceList;
 
+        customerMasterList = new ArrayList<>();
         customerSpawnManagerService = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -63,6 +66,7 @@ public class CustomerSpawnManager {
             l.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(10), Insets.EMPTY)));
             c.setLabelRef(l);
             costumerBufferList.add(c);
+            customerMasterList.add(c);
             System.out.println("Spawned Customer" + c.getId() + " with Service:" + bs.getServiceName() + " after " + delayInterval + "ms " + timestamp());
             spawnCustomer(id + 1);
         };
@@ -79,4 +83,7 @@ public class CustomerSpawnManager {
         customerSpawnManagerService.shutdownNow();
     }
 
+    public ArrayList<Customer> getCustomerMasterList() {
+        return customerMasterList;
+    }
 }

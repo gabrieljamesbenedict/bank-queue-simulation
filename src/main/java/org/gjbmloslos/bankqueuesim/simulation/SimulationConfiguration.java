@@ -1,4 +1,4 @@
-package org.gjbmloslos.bankqueuesim;
+package org.gjbmloslos.bankqueuesim.simulation;
 
 import org.gjbmloslos.bankqueuesim.component.inclusion.InclusionMode;
 import org.gjbmloslos.bankqueuesim.entity.bank.BankService;
