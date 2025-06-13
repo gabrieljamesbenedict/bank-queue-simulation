@@ -79,7 +79,7 @@ public class CustomerQueueManager {
         };
 
         customerQueueService.scheduleWithFixedDelay(queueManagerTask, 0, 10, TimeUnit.MILLISECONDS);
-        customerQueueService.scheduleWithFixedDelay(cleanQueueTask, 0, 5, TimeUnit.SECONDS);
+        //customerQueueService.scheduleWithFixedDelay(cleanQueueTask, 0, 5, TimeUnit.SECONDS);
     }
 
     public void endCustomerQueueService () {

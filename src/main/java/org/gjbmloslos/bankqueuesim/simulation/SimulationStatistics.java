@@ -85,7 +85,7 @@ public class SimulationStatistics {
         statService.submit(customerTimeStatisticsTask);
     }
 
-    final int THROUGHPUT_MAX_TIME_INTERVAL = 5;
+    final int THROUGHPUT_MAX_TIME_INTERVAL = 10;
     int throughputTimeIntervalTracker = 0;
     Runnable customerThroughputTask;
     public void calculateThroughput() {

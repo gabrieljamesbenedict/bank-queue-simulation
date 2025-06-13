@@ -201,5 +201,6 @@ public class SimulationController {
         customerSpawnManager.endCustomerSpawnService();
         customerQueueManager.endCustomerQueueService();
         bankTellerManager.endBankTellerManageService();
+        timeRunnerService.shutdownNow();
     }
 }

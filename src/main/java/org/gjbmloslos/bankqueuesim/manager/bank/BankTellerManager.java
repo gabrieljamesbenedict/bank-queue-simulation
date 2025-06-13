@@ -42,7 +42,7 @@ public class BankTellerManager {
         completedCustomers = 0;
         availableBankTellerList = new ArrayList<>(bankTellerList);
         tempCompletedCustomerList = new ArrayList<>();
-        bankTellerManagerService = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(4);
+        bankTellerManagerService = (ScheduledThreadPoolExecutor) Executors.newScheduledThreadPool(1);
     }
 
     private String timestamp () {
@@ -86,7 +86,7 @@ public class BankTellerManager {
 
         };
 
-        bankTellerManagerService.scheduleWithFixedDelay(addCustomerToTeller, 0, 1, TimeUnit.MILLISECONDS);
+        bankTellerManagerService.scheduleWithFixedDelay(addCustomerToTeller, 0, 20, TimeUnit.MILLISECONDS);
         bankTellerManagerService.scheduleWithFixedDelay(processCostumerAtTeller, 0, (1000/speed), TimeUnit.MILLISECONDS);
     }
 

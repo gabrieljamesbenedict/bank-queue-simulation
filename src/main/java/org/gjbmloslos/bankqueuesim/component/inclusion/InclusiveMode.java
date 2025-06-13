@@ -7,6 +7,9 @@ import org.gjbmloslos.bankqueuesim.entity.customer.CustomerQueue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class InclusiveMode extends InclusionMode{
 
@@ -17,38 +20,45 @@ public class InclusiveMode extends InclusionMode{
 
     @Override
     public void assignCustomerToTeller(ArrayList<BankTeller> availableBankTellerList) {
-        if (availableBankTellerList.isEmpty()) return;
-
         try {
+
+            Random r = new Random();
+            //System.out.println(availableBankTellerList);
+
             bankTellerGuard.acquire();
-        } catch (InterruptedException e) {e.printStackTrace();}
+            try {
+                Iterator<BankTeller> bti = availableBankTellerList.iterator();
+                while (bti.hasNext()) {
 
-        BankTeller bt = availableBankTellerList
-                .stream()
-                .filter(e -> !e.isBusy())
-                .toList()
-                .getFirst();
+                    BankTeller bt = bti.next();
 
-        bankTellerGuard.release();
+                    CustomerQueue cq = customerQueueList.get(r.nextInt(customerQueueList.size()));
+                    if (cq.getCustomerQueue().isEmpty()) {
+                        return;
+                    }
 
-        Iterator<CustomerQueue> cqi = customerQueueList.iterator();
-        while (cqi.hasNext()) {
-            CustomerQueue cq = cqi.next();
-            if (cq.getCustomerQueue().isEmpty()) continue;
-            Customer c = cq.getCustomerQueue().remove();
+                    Customer c = cq.getCustomerQueue().remove();
 
-            System.out.println(log(c,bt));
-            c.setProcessing(true);
-            bt.setCurrentCustomer(c);
-            Platform.runLater(() -> {
-                if (bt.getTellerBox().getChildren().size() > 1)
-                    bt.getTellerBox().getChildren().set(1, c.getLabelRef());
-                else
-                    bt.getTellerBox().getChildren().add(c.getLabelRef());
-            });
-            bt.setBusy(true);
-            availableBankTellerList.remove(bt);
-            //System.out.println("Added Customer" + c.getId() + " from CustomerQueue" + c.getCustomerQueue().getId() + " to BankTeller" + bt.getId() + " " + timestamp());
+                    System.out.println(log(c,bt));
+                    c.setProcessing(true);
+                    bt.setCurrentCustomer(c);
+                    Platform.runLater(() -> {
+                        if (bt.getTellerBox().getChildren().size() > 1)
+                            bt.getTellerBox().getChildren().set(1, c.getLabelRef());
+                        else
+                            bt.getTellerBox().getChildren().add(c.getLabelRef());
+                    });
+                    bt.setBusy(true);
+                    availableBankTellerList.remove(bt);
+
+                }
+            } finally {
+                bankTellerGuard.release();
+            }
+
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
+
     }
 }
